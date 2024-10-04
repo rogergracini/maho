@@ -1,0 +1,38 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var $this Mage_Sales_Block_Order_Totals
+ * @see Mage_Sales_Block_Order_Totals
+ */
+?>
+<?php foreach ($this->getTotals() as $_code => $_total): ?>
+    <?php if ($_total->getBlockName()): ?>
+        <?= $this->getChildHtml($_total->getBlockName(), false) ?>
+    <?php else: ?>
+    <tr class="<?= $_code ?>">
+        <td <?= $this->getLabelProperties() ?>>
+            <?php if ($_total->getStrong()):?>
+            <strong><?= $this->escapeHtml($_total->getLabel()) ?></strong>
+            <?php else: ?>
+            <?= $this->escapeHtml($_total->getLabel()) ?>
+            <?php endif ?>
+        </td>
+        <td <?= $this->getValueProperties() ?>>
+            <?php if ($_total->getStrong()):?>
+            <strong><?= $this->formatValue($_total) ?></strong>
+            <?php else: ?>
+            <?= $this->formatValue($_total) ?>
+            <?php endif ?>
+        </td>
+    </tr>
+    <?php endif ?>
+<?php endforeach ?>

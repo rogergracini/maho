@@ -1,0 +1,52 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var $this Mage_Tax_Block_Checkout_Shipping
+ * @see Mage_Tax_Block_Checkout_Shipping
+ */
+?>
+<?php if ($this->displayBoth()):?>
+<tr>
+    <td style="<?= $this->getStyle() ?>" class="a-right" colspan="<?= $this->getColspan() ?>">
+        <?= $this->getExcludeTaxLabel() ?>
+    </td>
+    <td style="<?= $this->getStyle() ?>" class="a-right">
+        <?= $this->formatPrice($this->getShippingExcludeTax()) ?>
+    </td>
+</tr>
+<tr>
+    <td style="<?= $this->getStyle() ?>" class="a-right" colspan="<?= $this->getColspan() ?>">
+        <?= $this->getIncludeTaxLabel() ?>
+    </td>
+    <td style="<?= $this->getStyle() ?>" class="a-right">
+        <?= $this->formatPrice($this->getShippingIncludeTax()) ?>
+    </td>
+</tr>
+<?php elseif($this->displayIncludeTax()) : ?>
+<tr>
+    <td style="<?= $this->getStyle() ?>" class="a-right" colspan="<?= $this->getColspan() ?>">
+        <?= $this->getTotal()->getTitle() ?>
+    </td>
+    <td style="<?= $this->getStyle() ?>" class="a-right">
+        <?= $this->formatPrice($this->getShippingIncludeTax()) ?>
+    </td>
+</tr>
+<?php else: ?>
+<tr>
+    <td style="<?= $this->getStyle() ?>" class="a-right" colspan="<?= $this->getColspan() ?>">
+        <?= $this->escapeHtml($this->getTotal()->getTitle()) ?>
+    </td>
+    <td style="<?= $this->getStyle() ?>" class="a-right">
+        <?= $this->formatPrice($this->getShippingExcludeTax()) ?>
+    </td>
+</tr>
+<?php endif ?>

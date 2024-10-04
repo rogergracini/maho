@@ -1,0 +1,36 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="col2-set">
+    <div class="box">
+        <div class="box-title">
+            <h3><?= $this->__('Address Book') ?></h3>
+            <a href="<?= $this->getAddressBookUrl() ?>"><?= $this->__('Manage Addresses') ?></a>
+        </div>
+        <div class="box-content">
+            <div class="col-1">
+                <h4><?= $this->__('Default Billing Address') ?></h4>
+                <address>
+                    <?= $this->getPrimaryBillingAddressHtml() ?><br />
+                    <a href="<?= $this->getPrimaryBillingAddressEditUrl() ?>"><?= $this->__('Edit Address') ?></a>
+                </address>
+            </div>
+            <div class="col-2">
+                <h4><?= $this->__('Default Shipping Address') ?></h4>
+                <address>
+                    <?= $this->getPrimaryShippingAddressHtml() ?><br />
+                    <a href="<?= $this->getPrimaryShippingAddressEditUrl() ?>"><?= $this->__('Edit Address') ?></a>
+                </address>
+            </div>
+        </div>
+    </div>
+</div>

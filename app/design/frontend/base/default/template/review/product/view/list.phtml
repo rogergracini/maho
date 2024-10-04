@@ -1,0 +1,52 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php $_items = $this->getReviewsCollection()->getItems();?>
+<div class="box-collateral box-reviews" id="customer-reviews">
+    <?php if (count($_items)):?>
+        <h2><?= $this->__('Customer Reviews') ?></h2>
+        <?= $this->getChildHtml('toolbar') ?>
+        <dl>
+        <?php foreach ($_items as $_review):?>
+            <dt>
+                <a href="<?= $this->getReviewUrl($_review->getId()) ?>"><?= $this->escapeHtml($_review->getTitle()) ?></a> <?= $this->__('Review by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?>
+            </dt>
+            <dd>
+                <?php $_votes = $_review->getRatingVotes(); ?>
+                <?php if (count($_votes)): ?>
+                <table class="ratings-table">
+                    <col width="1" />
+                    <col />
+                    <tbody>
+                        <?php foreach ($_votes as $_vote): ?>
+                        <tr>
+                            <th><?= $this->escapeHtml($_vote->getRatingCode()) ?></th>
+                            <td>
+                                <div class="rating-box">
+                                    <div class="rating" style="width:<?= $_vote->getPercent() ?>%;"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+                <?php endif ?>
+                <?= nl2br($this->escapeHtml($_review->getDetail())) ?>
+                <small class="date"><?= $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small>
+            </dd>
+        <?php endforeach ?>
+        </dl>
+        <?= $this->getChildHtml('toolbar') ?>
+    <?php endif ?>
+    <?= $this->getChildHtml('review_form') ?>
+</div>

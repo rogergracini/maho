@@ -1,0 +1,65 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?= $this->getGridParentHtml() ?>
+<?php if($this->canDisplayContainer()): ?>
+<script type="text/javascript">
+//<!--
+wishlistControl = {
+    reload: function (urlParams) {
+        if (!urlParams) {
+            urlParams = '';
+        }
+        var url = <?= $this->getJsObjectName() ?>.url + '?ajax=true' + urlParams;
+        new Ajax.Updater(
+            <?= $this->getJsObjectName() ?>.containerId,
+            url,
+            {
+                parameters: {form_key: FORM_KEY},
+                onComplete: <?= $this->getJsObjectName() ?>.initGrid.bind(<?= $this->getJsObjectName() ?>),
+                evalScripts:true
+            }
+        );
+    },
+
+    configureItem: function (itemId) {
+        productConfigure.setOnLoadIFrameCallback('wishlist', this.cbOnLoadIframe.bind(this));
+        productConfigure.showItemConfiguration('wishlist', itemId);
+        return false;
+    },
+
+    cbOnLoadIframe: function (response) {
+        if (!response.ok) {
+            return;
+        }
+        this.reload();
+    },
+
+    removeItem: function (itemId) {
+        if(!confirm('<?= Mage::helper('core')->jsQuoteEscape(Mage::helper('customer')->__('Are you sure that you want to remove this item?')) ?>')) {
+            return false;
+        }
+        this.reload('&delete=' + itemId);
+        return false;
+    }
+}
+
+productConfigure.addListType(
+    'wishlist',
+    {
+        urlFetch: '<?= $this->getUrl('*/customer_wishlist_product_composite_wishlist/configure') ?>',
+        urlConfirm: '<?= $this->getUrl('*/customer_wishlist_product_composite_wishlist/update') ?>'
+    }
+);
+//-->
+</script>
+<?php endif ?>

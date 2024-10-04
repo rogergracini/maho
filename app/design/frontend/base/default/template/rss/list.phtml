@@ -1,0 +1,64 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title rss-title">
+    <h1><?= $this->__('RSS Feeds') ?></h1>
+</div>
+<?php
+    $_categories = $this->getRssCatalogFeeds();
+    $_misc = $this->getRssMiscFeeds();
+?>
+<?php if ($_categories || $_misc): ?>
+<?php if($_misc): ?>
+<table class="data-table rss-table" id="rss-table-misc">
+    <col />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th colspan="2"><?= $this->__('Miscellaneous Feeds') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($_misc as $_feed): ?>
+        <tr>
+            <td><?= $_feed->getLabel() ?></td>
+            <td><a href="<?= $_feed->getUrl() ?>" class="link-rss"><?= $this->__('Get Feed') ?></a></td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+<?php endif ?>
+<?php if ($_categories && $_misc): ?>
+<br />
+<?php endif ?>
+<?php if($_categories): ?>
+<table class="data-table rss-table" id="rss-table-category">
+    <col />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th colspan="2"><?= $this->__('Category Feeds') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($_categories as $_category): ?>
+        <tr>
+            <td><?= $_category->getLabel() ?></td>
+            <td><a href="<?= $_category->getUrl() ?>" class="link-rss"><?= $this->__('Get Feed') ?></a></td>
+        </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+<?php endif ?>
+<?php else: ?>
+    <p><?= $this->__('There are no Rss Feeds') ?></p>
+<?php endif ?>

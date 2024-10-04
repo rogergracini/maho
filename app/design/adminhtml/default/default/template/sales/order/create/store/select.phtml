@@ -1,0 +1,39 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /* @var $this Mage_Adminhtml_Block_Sales_Order_Create_Store_Select */ ?>
+<div class="store-scope">
+    <div class="tree-store-scope">
+    <?php foreach ($this->getWebsiteCollection() as $_website): ?>
+        <?php $showWebsite=false; ?>
+        <?php foreach ($this->getGroupCollection($_website) as $_group): ?>
+            <?php $showGroup=false; ?>
+            <?php foreach ($this->getStoreCollection($_group) as $_store): ?>
+                <?php if ($showWebsite == false): ?>
+                    <?php $showWebsite = true; ?>
+                    <h3><?= $this->escapeHtml($_website->getName()) ?></h3>
+                <?php endif ?>
+                <?php if ($showGroup == false): ?>
+                    <?php $showGroup = true; ?>
+                    <h4 style="margin-left:12px;"><?= $this->escapeHtml($_group->getName()) ?></h4>
+                <?php endif ?>
+                <span class="field-row" style="margin-left:28px;">
+                    <input type="radio" id="store_<?= $_store->getId() ?>" class="radio" onclick="order.setStoreId('<?= $_store->getId() ?>')"/>
+                    <label for="store_<?= $_store->getId() ?>" class="inline"><?= $this->escapeHtml($_store->getName()) ?></label>
+                </span>
+            <?php endforeach ?>
+            <?php if ($showGroup): ?>
+            <?php endif ?>
+        <?php endforeach ?>
+    <?php endforeach ?>
+    </div>
+</div>

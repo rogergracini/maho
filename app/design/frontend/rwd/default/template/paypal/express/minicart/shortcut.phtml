@@ -1,0 +1,59 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @var $this Mage_Paypal_Block_Express_Shortcut
+ */
+?>
+<li>
+    <p class="paypal-logo">
+        <?php $shortcutHtmlId = $this->getShortcutHtmlId() ?>
+        <?php $bmlShortcutHtmlId = $this->getBmlShortcutHtmlId() ?>
+        <a class="paypal-button" data-action="checkout-form-submit" id="<?= $shortcutHtmlId ?>" href="<?= $this->getCheckoutUrl()?>"><img src="<?= $this->getImageUrl() ?>" alt="<?= $this->quoteEscape(Mage::helper('paypal')->__('Checkout with PayPal')) ?>" title="<?= $this->quoteEscape(Mage::helper('paypal')->__('Checkout with PayPal')) ?>" /></a>
+
+        <span class="paypal-or"><?= $this->__('-OR-') ?></span>
+    </p>
+</li>
+<?php if ($this->getIsBmlEnabled()): ?>
+<li class="bml-checkout-type">
+    <p class="paypal-logo">
+        <span class="bml_button">
+            <a id="<?= $bmlShortcutHtmlId ?>" href="<?= $this->getBmlCheckoutUrl()?>"><img src="<?= $this->getBmlImageUrl() ?>" alt="<?= $this->quoteEscape(Mage::helper('paypal')->__('Checkout with PayPal Paypal Credit')) ?>" title="<?= $this->quoteEscape(Mage::helper('paypal')->__('Checkout with PayPal Paypal Credit')) ?>" /></a>
+            <a href="<?= $this->getMarketMessageUrl() ?>"><img src="<?= $this->getMarketMessage() ?>" /></a>
+        </span>
+        <span class="paypal-or"><?= $this->__('-OR-') ?></span>
+    </p>
+</li>
+<?php endif ?>
+
+<?php if ($this->getConfirmationUrl() || $this->getIsInCatalogProduct()): ?>
+    <?php if ($this->getIsInCatalogProduct()): ?>
+        <input type="hidden" id="pp_checkout_url" name="return_url" value="" />
+    <?php endif ?>
+    <script type="text/javascript">
+        //<![CDATA[
+        $$('#<?= $shortcutHtmlId ?>','#<?= $bmlShortcutHtmlId ?>').invoke('observe', 'click', function(event) {
+            <?php if ($this->getConfirmationUrl()): ?>
+            if (confirm('<?= Mage::helper('core')->jsQuoteEscape($this->getConfirmationMessage()) ?>')) {
+                this.href = '<?= $this->getConfirmationUrl() ?>';
+            }
+            <?php endif ?>
+            <?php if ($this->getIsInCatalogProduct()): ?>
+            $('pp_checkout_url').value = this.href;
+            productAddToCartForm.submit(this);
+            event.stop();
+            <?php endif ?>
+        });
+        //]]>
+    </script>
+<?php endif ?>

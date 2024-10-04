@@ -1,0 +1,28 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if(count($this->getTotals()) > 0): ?>
+<div class="box" id="dashboard_diagram_totals">
+    <div class="entry-edit">
+        <table cellspacing="0" width="100%">
+            <tr>
+            <?php foreach( $this->getTotals() as $_total ): ?>
+                <td class="a-center bold">
+                    <span><?= $_total['label'] ?></span><br />
+                    <span class="nowrap" style="font-size:18px; color:#EA7601;"><?= $_total['value'] ?><span style="font-size:14px; color:#DE8946;"><?= $_total['decimals'] ?></span></span>
+                </td>
+            <?php endforeach ?>
+            </tr>
+        </table>
+    </div>
+</div>
+<?php endif ?>

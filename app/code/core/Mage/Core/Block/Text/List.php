@@ -1,0 +1,37 @@
+<?php
+/**
+ * Maho
+ *
+ * @category   Mage
+ * @package    Mage_Core
+ * @copyright  Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright  Copyright (c) 2020-2023 The OpenMage Contributors (https://openmage.org)
+ * @copyright  Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license    https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Base html block
+ *
+ * @category   Mage
+ * @package    Mage_Core
+ */
+class Mage_Core_Block_Text_List extends Mage_Core_Block_Text
+{
+    /**
+     * @inheritDoc
+     */
+    #[\Override]
+    protected function _toHtml()
+    {
+        $this->setText('');
+        foreach ($this->getSortedChildren() as $name) {
+            $block = $this->getLayout()->getBlock($name);
+            if (!$block) {
+                Mage::throwException(Mage::helper('core')->__('Invalid block: %s', $name));
+            }
+            $this->addText($block->toHtml());
+        }
+        return parent::_toHtml();
+    }
+}

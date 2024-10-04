@@ -1,0 +1,40 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="box-account box-tags">
+    <div class="box-head">
+        <h2><?= $this->__('My Recent Tags') ?></h2>
+        <a href="<?= $this->getAllTagsUrl() ?>"><?= $this->__('View All Tags') ?></a>
+    </div>
+    <ol id="my_recent_tags">
+        <?php $iterator = 0; ?>
+        <?php foreach( $this->getCollection()->getItems() as $_item ): ?>
+            <li class="item">
+                <span class="number"><?= ++$iterator ?></span>
+                <div class="details">
+                    <h3 class="product-name"><a href="<?= $_item->getProductUrl() ?>"><?= $this->escapeHtml($_item->getName()) ?></a></h3>
+                    <div class="tags">
+                        <strong><?= $this->__('Tags:') ?></strong>
+                        <?php $_i = 0; ?>
+                        <ul>
+                        <?php $_itemProductTags = $_item->getProductTags(); ?>
+                        <?php $_itemProductTagCount = count($_itemProductTags->getItems()); ?>
+                        <?php foreach($_itemProductTags as $_tag): ?>
+                            <li><a href="<?= $_tag->getViewTagUrl() ?>"><?= $this->escapeHtml($_tag->getName()) ?></a><?php if(++$_i !== $_itemProductTagCount): ?>,<?php endif ?></li>
+                        <?php endforeach ?>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        <?php endforeach ?>
+    </ol>
+</div>

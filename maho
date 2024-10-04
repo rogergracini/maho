@@ -1,0 +1,62 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Maho
+ *
+ * @category   Maho
+ * @package    MahoCLI
+ * @copyright  Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license    https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+define('MAHO_ROOT_DIR', __DIR__);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use MahoCLI\CommandDiscoverer;
+use Symfony\Component\Console\Application;
+
+$application = new Application('');
+
+$application->add(new \MahoCLI\Commands\AdminUserList());
+$application->add(new \MahoCLI\Commands\AdminUserCreate());
+$application->add(new \MahoCLI\Commands\AdminUserChangepassword());
+$application->add(new \MahoCLI\Commands\AdminUserEnable());
+$application->add(new \MahoCLI\Commands\AdminUserDisable());
+
+$application->add(new \MahoCLI\Commands\CacheEnable());
+$application->add(new \MahoCLI\Commands\CacheDisable());
+$application->add(new \MahoCLI\Commands\CacheFlush());
+
+$application->add(new \MahoCLI\Commands\CustomerCreate());
+$application->add(new \MahoCLI\Commands\CustomerChangepassword());
+$application->add(new \MahoCLI\Commands\CustomerDelete());
+$application->add(new \MahoCLI\Commands\CustomerList());
+
+$application->add(new \MahoCLI\Commands\IndexList());
+$application->add(new \MahoCLI\Commands\IndexReindex());
+$application->add(new \MahoCLI\Commands\IndexReindexAll());
+
+$application->add(new \MahoCLI\Commands\CronHistory());
+$application->add(new \MahoCLI\Commands\CronList());
+$application->add(new \MahoCLI\Commands\CronRun());
+
+$application->add(new \MahoCLI\Commands\LogClean());
+$application->add(new \MahoCLI\Commands\LogStatus());
+
+$application->add(new \MahoCLI\Commands\HealthCheck());
+$application->add(new \MahoCLI\Commands\Install());
+$application->add(new \MahoCLI\Commands\Serve());
+$application->add(new \MahoCLI\Commands\LegacyRenameMysql4Classes());
+
+$application->add(new \MahoCLI\Commands\SysCurrencies());
+$application->add(new \MahoCLI\Commands\SysLocales());
+$application->add(new \MahoCLI\Commands\SysTimezones());
+
+$discoverer = new CommandDiscoverer();
+$commands = $discoverer->discover(__DIR__ . '/vendor/*/*') + $discoverer->discover(__DIR__);
+foreach ($commands as $command) {
+    $application->add($command);
+}
+
+$application->run();

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @see Mage_Catalog_Block_Seo_Sitemap_
+ */
+?>
+<?php $_items = $this->getCollection(); ?>
+<?php if($_items->getSize()): ?>
+    <ul class="sitemap">
+        <?php foreach ($_items as $_item): ?>
+            <li><a href="<?= $this->getItemUrl($_item) ?>"><?= $this->escapeHtml($_item->name) ?></a></li>
+        <?php endforeach ?>
+    </ul>
+<?php else: ?>
+    <p class="note-msg">
+        <?= $this->__('There are no %s available.', $this->getItemsTitle()) ?>
+    </p>
+    <script type="text/javascript">
+    //<![CDATA[
+        if ($('sitemap_top_links') != undefined) {
+            $('sitemap_top_links').hide();
+        }
+    //]]>
+    </script>
+<?php endif ?>

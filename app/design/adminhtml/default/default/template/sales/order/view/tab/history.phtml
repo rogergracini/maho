@@ -1,0 +1,44 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="entry-edit">
+    <fieldset>
+        <ul class="note-list">
+        <?php foreach ($this->getFullHistory() as $_item): ?>
+            <li>
+                <strong><?= $this->getItemCreatedAt($_item) ?></strong>
+                <?= $this->getItemCreatedAt($_item, 'time') ?><span class="separator">|</span>
+                <?php if ($this->getItemTitle($_item)): ?>
+                <strong><?= $this->getItemTitle($_item) ?></strong>
+                <span class="separator">|</span>
+                <?php endif ?>
+                <small>
+                    <?= $this->helper('sales')->__('Customer') ?>
+                    <strong class="subdue">
+                    <?php if ($this->isCustomerNotificationNotApplicable($_item)): ?>
+                        <?= $this->helper('sales')->__('Notification Not Applicable') ?>
+                    <?php elseif ($this->isItemNotified($_item)): ?>
+                        <?= $this->helper('sales')->__('Notified') ?>
+                        <img src="<?= $this->getSkinUrl('images/ico_success.gif') ?>" width="16px" height="16px" alt="" />
+                    <?php else: ?>
+                        <?= $this->helper('sales')->__('Not Notified') ?>
+                    <?php endif ?>
+                    </strong>
+                </small>
+                <?php if ($_comment = $this->getItemComment($_item)): ?>
+                    <br/><?= $_comment ?>
+                <?php endif ?>
+            </li>
+        <?php endforeach ?>
+        </ul>
+    </fieldset>
+</div>

@@ -1,0 +1,46 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @see Mage_Adminhtml_Block_Sales_Items_Column_Name
+ */
+?>
+
+<?php if ($_item = $this->getItem()): ?>
+    <h5 class="title"><span id="order_item_<?= $_item->getId() ?>_title"><?= $this->escapeHtml($_item->getName()) ?></span></h5>
+    <div><strong><?= $this->helper('sales')->__('SKU') ?>:</strong> <?= implode('<br />', Mage::helper('catalog')->splitSku($this->escapeHtml($this->getSku()))) ?></div>
+    <?php if ($this->getOrderOptions()): ?>
+        <dl class="item-options">
+        <?php foreach ($this->getOrderOptions() as $_option): ?>
+            <dt><?= $this->escapeHtml($_option['label']) ?></dt>
+            <dd>
+            <?php if (isset($_option['custom_view']) && $_option['custom_view']): ?>
+                <?= $this->getCustomizedOptionValue($_option) ?>
+            <?php else: ?>
+                <?php $_option = $this->getFormattedOption($_option['value']); ?>
+                <?= $_option['value'] ?><?php if (isset($_option['remainder']) && $_option['remainder']): ?><span id="<?= $_dots = 'dots' . uniqid()?>"> ...</span><span id="<?= $_id = 'id' . uniqid() ?>"><?= $_option['remainder'] ?></span>
+                    <script type="text/javascript">
+                    $('<?= $_id ?>').hide();
+                    $('<?= $_id ?>').up().observe('mouseover', function(){$('<?= $_id ?>').show();});
+                    $('<?= $_id ?>').up().observe('mouseover', function(){$('<?= $_dots ?>').hide();});
+                    $('<?= $_id ?>').up().observe('mouseout',  function(){$('<?= $_id ?>').hide();});
+                    $('<?= $_id ?>').up().observe('mouseout',  function(){$('<?= $_dots ?>').show();});
+                    </script>
+                <?php endif ?>
+            <?php endif ?>
+            </dd>
+        <?php endforeach ?>
+        </dl>
+    <?php endif ?>
+    <?= $this->escapeHtml($_item->getDescription()) ?>
+<?php endif ?>

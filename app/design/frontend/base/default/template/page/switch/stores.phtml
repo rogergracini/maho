@@ -1,0 +1,33 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2023 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Store switcher template
+ *
+ * @var Mage_Core_Block_Store_Switcher $this
+ */
+?>
+<?php if(count($this->getGroups())>1): ?>
+<div class="store-switcher">
+    <label for="select-store"><?= $this->__('Select Store:') ?></label>
+    <select id="select-store" title="<?= $this->__('Select Store') ?>" onchange="location.href=this.value">
+    <?php /*foreach ($this->getStores() as $_store): ?>
+        <option value="<?= $_store->getUrl('') ?>"<?php if($_store->getId()==$this->getCurrentStoreId()): ?> selected="selected"<?php endif ?>><?= $_store->getName() ?></option>
+    <?php endforeach;*/ ?>
+    <?php foreach ($this->getGroups() as $_group): ?>
+        <?php $_selected = ($_group->getId()==$this->getCurrentGroupId()) ? ' selected="selected"' : '' ?>
+        <option value="<?= $_group->getHomeUrl() ?>"<?= $_selected ?>><?= $this->escapeHtml($_group->getName()) ?></option>
+    <?php endforeach ?>
+    </select>
+</div>
+<?php endif ?>

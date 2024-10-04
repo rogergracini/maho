@@ -1,0 +1,85 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022-2023 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Adminhtml_Block_Newsletter_Queue_Edit */
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3><?= $this->getHeaderText() ?></h3></td>
+            <td class="form-buttons">
+                <?= $this->getBackButtonHtml() ?>
+                <?= $this->getPreviewButtonHtml() ?>
+                <?php if(!$this->getIsPreview()): ?>
+                    <?= $this->getResetButtonHtml() ?>
+                    <?= $this->getSaveButtonHtml() ?>
+                <?php endif ?>
+                <?php if($this->getCanResume()): ?>
+                    <?= $this->getResumeButtonHtml() ?>
+                <?php endif ?>
+            </td>
+        </tr>
+    </table>
+</div>
+<form action="<?= $this->getSaveUrl() ?>" method="post" id="queue_edit_form">
+    <?= $this->getBlockHtml('formkey') ?>
+    <div class="no-display">
+        <input type="hidden" name="_resume" id="_resume_flag" value="" />
+    </div>
+    <?= $this->getChildHtml('form') ?>
+</form>
+<form action="<?= $this->getPreviewUrl() ?>" method="post" id="newsletter_queue_preview_form" target="_blank">
+    <?= $this->getBlockHtml('formkey') ?>
+    <div class="no-display">
+        <input type="hidden" id="preview_type" name="type" value="<?= $this->getIsTextType()?1:2 ?>" />
+        <input type="hidden" id="preview_text" name="text" value="" />
+        <input type="hidden" id="preview_styles" name="styles" value="" />
+        <input type="hidden" id="preview_id" name="id" value="" />
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+var queueForm = new varienForm('queue_edit_form');
+var newsletterPreviewForm = new varienForm('newsletter_queue_preview_form');
+
+var queueControl = {
+    id: 'text',
+    save: function() {
+        $('_resume_flag').value = '';
+        queueForm.submit();
+    },
+    preview: function() {
+        if (this.isEditor() && tinymce.get(this.id)) {
+            tinymce.triggerSave();
+            $('preview_text').value = $(this.id).value;
+            tinymce.triggerSave();
+        } else {
+            $('preview_text').value = $(this.id).value;
+        }
+        if ($('styles') != undefined) {
+            $('preview_styles').value = $('styles').value;
+        }
+        if ($('id') != undefined) {
+            $('preview_id').value = $('id').value;
+        }
+        newsletterPreviewForm.submit();
+        return false;
+    },
+    isEditor: function() {
+        return (typeof tinyMceEditors != 'undefined' && tinyMceEditors[this.id] != undefined)
+    },
+    resume: function() {
+        $('_resume_flag').value = '1';
+        queueForm.submit();
+    }
+};
+//]]>
+</script>

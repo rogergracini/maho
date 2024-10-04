@@ -1,0 +1,87 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2020-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/** @var $this Mage_Install_Block_Config */
+?>
+<div class="page-head">
+    <h3><?= $this->__('Configuration') ?></h3>
+</div>
+<?= $this->getMessagesBlock()->toHtml() ?>
+<?php if($this->getInstaller()->getServerCheckStatus()): ?>
+<form action="<?= $this->getPostUrl() ?>" method="post" id="form-validate">
+<?= $this->getLayout()->getBlock('database')->toHtml() ?>
+
+<fieldset class="group-select">
+    <legend><?= $this->__('Web access options') ?></legend>
+    <h4 class="legend"><?= $this->__('Web access options') ?></h4>
+    <ul>
+        <li>
+            <label for="base_url"><?= $this->__('Base URL') ?> <span class="required">*</span></label><br />
+            <input type="text" name="config[unsecure_base_url]" id="base_url" value="<?= $this->getFormData()->getUnsecureBaseUrl() ?>" title="<?= Mage::helper('core')->quoteEscape($this->__('Base URL')) ?>" class="required-entry validate-url input-text" />
+        </li>
+        <li>
+            <label for="admin_frontname"><?= $this->__('Admin Path') ?> <span class="required">*</span></label><br />
+            <input type="text" name="config[admin_frontname]" id="admin_frontname" value="<?= $this->getFormData()->getAdminFrontname() ?>" title="<?= Mage::helper('core')->quoteEscape($this->__('Admin Path')) ?>" class="required-entry validate-data input-text" />
+            <p style="margin-top:4px; line-height:1.3em; color:#666;">
+                <small><?= $this->__('Additional path added after Base URL to access your Administrative Panel (e.g. admin, backend, control etc.).') ?></small>
+            </p>
+        </li>
+        <li>
+            <input type="checkbox" name="config[use_secure]" id="use_secure" value="1" <?php if($this->getFormData()->getUseSecure()): ?>checked="checked"<?php endif ?> onclick="this.checked ? $('use_secure_options').show() : $('use_secure_options').hide(); return true;" />
+            <label for="use_secure"><?= $this->__('Use Secure URLs (SSL)') ?></label><br />
+            <p style="margin-top:4px; line-height:1.3em; color:#666;">
+                <small><?= $this->__('Enable this option only if you have SSL available.') ?></small>
+            </p>
+        </li>
+    </ul>
+    <ul id="use_secure_options" <?php if(!$this->getFormData()->getUseSecure()): ?>style="display:none"<?php endif ?>>
+        <li>
+            <label for="secure_base_url"><?= $this->__('Secure Base URL') ?> <span class="required">*</span></label><br />
+            <input type="text" name="config[secure_base_url]" id="secure_base_url" value="<?= $this->getFormData()->getSecureBaseUrl() ?>" title="<?= Mage::helper('core')->quoteEscape($this->__('Secure Base URL')) ?>" class="required-entry validate-url input-text" />
+            <p style="margin-top:4px; line-height:1.3em; color:#666;">
+                <small><?= $this->__('Provide a complete base URL for SSL connection. For example: %s', '<strong>https://mydomain.com/maho/</strong>') ?></small>
+            </p>
+        </li>
+        <li>
+            <input type="checkbox" name="config[use_secure_admin]" id="use_secure_admin" value="1" <?php if($this->getFormData()->getUseSecureAdmin()): ?>checked="checked"<?php endif ?> />
+            <label for="use_secure_admin"><?= $this->__('Run admin interface with SSL') ?></label><br />
+        </li>
+    </ul>
+</fieldset>
+
+<fieldset class="group-select">
+    <legend><?= $this->__('Session Storage Options') ?></legend>
+    <h4 class="legend"><?= $this->__('Session Storage Options') ?></h4>
+    <ul>
+        <li>
+            <div class="input-box">
+                <label for="password"><?= $this->__('Save Session Data In') ?></label><br />
+                <?= $this->getSessionSaveSelect() ?>
+            </div>
+        </li>
+    </ul>
+</fieldset>
+
+<div class="button-set">
+    <p class="required">* <?= $this->__('Required Fields') ?></p>
+    <button class="form-button" type="submit"><span><?= $this->__('Continue') ?></span></button>
+</div>
+</form>
+<script type="text/javascript">
+    var dataForm = new VarienForm('form-validate');
+</script>
+<?php else: ?>
+    <div><?= $this->__('Please set all required settings before clicking Continue') ?></div>
+    <div class="button-set">
+        <button class="form-button" type="button" onclick="setLocation('<?= $this->getUrl('*/*/*', ['_current'=>true]) ?>')"><span><?= $this->__('Continue') ?></span></button>
+    </div>
+<?php endif ?>

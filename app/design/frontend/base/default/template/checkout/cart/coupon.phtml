@@ -1,0 +1,47 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2023 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/** @var Mage_Checkout_Block_Cart_Coupon $this */
+?>
+<form id="discount-coupon-form" action="<?= $this->getFormActionUrl() ?>" method="post">
+    <div class="discount">
+        <h2><?= $this->__('Discount Codes') ?></h2>
+        <div class="discount-form">
+            <label for="coupon_code"><?= $this->__('Enter your coupon code if you have one.') ?></label>
+            <input type="hidden" name="remove" id="remove-coupone" value="0" />
+            <div class="input-box">
+                <input class="input-text" id="coupon_code" name="coupon_code" value="<?= $this->escapeHtml($this->getCouponCode()) ?>" />
+            </div>
+            <div class="buttons-set">
+                <button type="button" title="<?= Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>" class="button" onclick="discountForm.submit(false)" value="<?= Mage::helper('core')->quoteEscape($this->__('Apply Coupon')) ?>"><?= $this->__('Apply Coupon') ?></button>
+                <?php if(strlen($this->getCouponCode())): ?>
+                    &nbsp; <button type="button" title="<?= Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>" class="button" onclick="discountForm.submit(true)" value="<?= Mage::helper('core')->quoteEscape($this->__('Cancel Coupon')) ?>"><?= $this->__('Cancel Coupon') ?></button>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+var discountForm = new VarienForm('discount-coupon-form');
+discountForm.submit = function (isRemove) {
+    if (isRemove) {
+        $('coupon_code').removeClassName('required-entry');
+        $('remove-coupone').value = "1";
+    } else {
+        $('coupon_code').addClassName('required-entry');
+        $('remove-coupone').value = "0";
+    }
+    return VarienForm.prototype.submit.bind(discountForm)();
+}
+//]]>
+</script>

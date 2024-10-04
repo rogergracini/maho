@@ -1,0 +1,194 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Block_Adminhtml_Report_Grid
+ *
+ *  getId()
+ *  getCollection()
+ *  getColumns()
+ *  getPagerVisibility()
+ *  getVarNamePage()
+ */
+$numColumns = count($this->getColumns());
+?>
+<?php if($this->getCollection()): ?>
+    <?php if($this->canDisplayContainer()): ?>
+        <?php if($this->getGridHeader()): ?>
+        <div class="content-header">
+            <table cellspacing="0">
+                <tr>
+                    <td style="width:50%;"><h2><?= $this->getGridHeader() ?></h2></td>
+                </tr>
+            </table>
+        </div>
+        <?php endif ?>
+        <div id="<?= $this->getId() ?>">
+    <?php else: ?>
+        <?= $this->getMessagesBlock()->toHtml() ?>
+    <?php endif ?>
+    <?php if($this->getStoreSwitcherVisibility() || $this->getDateFilterVisibility()): ?>
+        <?php if($this->getStoreSwitcherVisibility()): ?>
+            <?= $this->getStoreSwitcherHtml() ?>
+        <?php endif ?>
+        <table cellspacing="0" class="actions">
+            <tr>
+        <?php if($this->getDateFilterVisibility()): ?>
+            <td class="a-left filter">
+                <div class="f-left">
+                    <div><?= $this->__('From') ?>:&nbsp;<input class="input-text no-changes required-entry" type="text" id="period_date_from" name="report_from" value="<?= $this->getFilter('report_from') ?>" style="width:5em" />&nbsp;&nbsp;</div>
+                    <div id="period_date_from_advaice"></div>
+                </div>
+
+                <div class="f-left">
+                    <div><?= $this->__('To') ?>:&nbsp;<input  class="input-text no-changes required-entry" type="text" id="period_date_to" name="report_to"  value="<?= $this->getFilter('report_to') ?>" style="width:5em" />&nbsp;&nbsp;</div>
+                    <div id="period_date_to_advaice"></div>
+                </div>
+
+                <div class="f-left">
+                    <?= $this->__('Show By') ?>:
+                    <select name="report_period" id="report_period" style="width:6em;">
+                    <?php foreach ($this->getPeriods() as $_value=>$_label): ?>
+                        <option value="<?= $_value ?>" <?php if($this->getFilter('report_period')==$_value): ?> selected<?php endif ?>><?= $_label ?></option>
+                    <?php endforeach ?>
+                    </select>
+                    <?= $this->getRefreshButtonHtml() ?>
+                </div>
+                <script type="text/javascript">
+                    Calendar.setup({
+                        inputField : 'period_date_from',
+                        ifFormat : '<?= $this->getDateFormat() ?>'
+                    });
+                    Calendar.setup({
+                        inputField : 'period_date_to',
+                        ifFormat : '<?= $this->getDateFormat() ?>'
+                    });
+                </script>
+            </td>
+        <?php endif ?>
+        <?php if($this->getExportVisibility()): ?>
+            <td class="a-right">
+                <img src="<?= $this->getSkinUrl('images/icon_export.gif') ?>" alt="" class="v-middle"/>&nbsp; <?= $this->__('Export to:') ?>
+                <select name="<?= $this->getId() ?>_export" id="<?= $this->getId() ?>_export" style="width:8em;">
+                <?php foreach ($this->getExportTypes() as $_type): ?>
+                    <option value="<?= $_type->getUrl() ?>"><?= $_type->getLabel() ?></option>
+                <?php endforeach ?>
+                </select>
+                <?= $this->getExportButtonHtml() ?>
+            </td>
+        <?php endif ?>
+            </tr>
+        </table>
+    <?php endif ?>
+
+    <div class="grid">
+    <table cellspacing="0" class="data" id="<?= $this->getId() ?>_table">
+        <col/>
+        <?php foreach ($this->getColumns() as $_column): ?>
+        <col <?= $_column->getHtmlProperty() ?>/>
+        <?php endforeach ?>
+        <?php if ($this->getHeadersVisibility() || $this->getFilterVisibility()): ?>
+            <thead>
+                <?php if ($this->getHeadersVisibility()): ?>
+                    <tr class="headings">
+                    <th class="no-link" style="width:100px"><span class="no-br"><?= $this->getPeriodText() ?></span></th>
+                    <?php foreach ($this->getColumns() as $_column): ?>
+                        <th <?= $_column->getHeaderHtmlProperty() ?>><span class="no-br"><?= $_column->getHeaderHtml() ?></span></th>
+                    <?php endforeach ?>
+                    </tr>
+                <?php endif ?>
+            </thead>
+        <?php endif ?>
+        <tbody>
+        <?php if ($this->getCollection()->getSize()): ?>
+        <?php foreach ($this->getCollection()->getIntervals() as $_index => $_item): ?>
+            <tr>
+            <?php $report=$this->getReport($_item['start'], $_item['end']) ?>
+            <?php $rows=count($report) ?>
+            <?php if ($rows > 0): ?>
+            <td rowspan="<?= $rows + ($this->getCountTotals() && $this->getSubtotalVisibility() ? 1 : 0) ?>"><?= $_index ?></td>
+                <?php $i=0;
+                foreach ($report as $_subIndex=>$_subItem): ?>
+                    <?php if($i>0): ?>
+                    <tr>
+                    <?php endif ?>
+                    <?php $i++; ?>
+                    <?php $j=0;
+                    foreach ($this->getColumns() as $_column): ?>
+                        <td class="<?= $_column->getCssProperty() ?> <?= ++$j==$numColumns ? 'last' : '' ?>">
+                            <?= (($_html = $_column->getRowField($_subItem)) != '' ? $_html : '&nbsp;') ?>
+                        </td>
+                    <?php endforeach ?>
+                    </tr>
+                <?php endforeach ?>
+                <?php if($this->getCountTotals() && $rows > 0 && $this->getSubtotalVisibility()): ?>
+                <tr>
+                    <?php $j=0;
+                    foreach ($this->getColumns() as $_column): ?>
+                        <td class="<?= $_column->getCssProperty() ?> <?= ++$j==$numColumns ? 'last' : '' ?> subtotal">
+                            <?= ($j==1) ? $this->getSubtotalText() : $_column->getRowField($this->getTotals()) ?>
+                        </td>
+                    <?php endforeach ?>
+                </tr>
+                <?php endif ?>
+            <?php else: ?>
+                <td><?= $_index ?></td>
+                <td colspan="<?= $numColumns ?>" class="empty-text <?= $this->getEmptyTextClass() ?> last"><?= $this->getEmptyText() ?></td>
+            <?php endif ?>
+            </tr>
+        <?php endforeach ?>
+        <?php elseif ($this->getEmptyText()): ?>
+            <tr>
+              <td class="empty-text <?= $this->getEmptyTextClass() ?>" colspan="<?= $numColumns + 1 ?>"><?= $this->getEmptyText() ?></td>
+            </tr>
+        <?php endif ?>
+        </tbody>
+        <?php if ($this->getCountTotals() && $this->getCollection()->getSize()): ?>
+        <tfoot>
+            <tr><th><?= $this->getTotalText() ?></th>
+            <?php $j=0;
+            foreach ($this->getColumns() as $_column): ?>
+                <th class="<?= $_column->getCssProperty() ?> <?= ++$j==$numColumns ? 'last' : '' ?>"><?= $_column->getRowField($this->getGrandTotals()) ?></th>
+            <?php endforeach ?>
+            </tr>
+         </tfoot>
+        <?php endif ?>
+    </table>
+    </div>
+<?php if($this->canDisplayContainer()): ?>
+</div>
+<script type="text/javascript">
+    var <?= $this->getJsObjectName() ?> = new varienGrid('<?= $this->getId() ?>', '<?= $this->getGridUrl() ?>', '<?= $this->getVarNamePage() ?>', '<?= $this->getVarNameSort() ?>', '<?= $this->getVarNameDir() ?>', '<?= $this->getVarNameFilter() ?>');
+    <?= $this->getJsObjectName() ?>.useAjax = '<?= $this->getUseAjax() ?>';
+    <?php if($this->getDateFilterVisibility()):?>
+        <?= $this->getJsObjectName() ?>.doFilterCallback = validateFilterDate;
+        const period_date_from = document.getElementById('period_date_from');
+        if (period_date_from) {
+            period_date_from.advaiceContainer = document.getElementById('period_date_from_advaice');
+        }
+        const period_date_to = document.getElementById('period_date_to');
+        if (period_date_to) {
+            period_date_to.advaiceContainer = document.getElementById('period_date_to_advaice');
+        }
+
+        function validateFilterDate()
+        {
+            if (period_date_from && period_date_to) {
+                return Validation.validate(period_date_from) && Validation.validate(period_date_to);
+            }
+            return true;
+        }
+    <?php endif ?>
+</script>
+<?php endif ?>
+<?php endif ?>

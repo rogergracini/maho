@@ -1,0 +1,72 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+$_product    = $this->getProduct();
+$_attribute = $this->getAttributeObj();
+$_jsonConfig = $this->getJsonConfig();
+$_config = json_decode($_jsonConfig);
+
+$_swatchInnerWidth = $this->getSwatchInnerWidth();
+$_swatchInnerHeight = $this->getSwatchInnerHeight();
+$_swatchOuterWidth = $this->getSwatchOuterWidth();
+$_swatchOuterHeight = $this->getSwatchOuterHeight();
+
+$_attr = $_attribute->getProductAttribute();
+$_attrCode = $_attr->getAttributeCode();
+$_id = $_attribute->getAttributeId();
+
+$_swatchArray = $_config->attributes->$_id;
+?>
+<dt class="swatch-attr">
+    <label id="<?= $_attrCode ?>_label" class="required">
+        <em>*</em><?= $_attribute->getLabel() ?>:
+        <span id="select_label_<?= $_attrCode ?>" class="select-label"></span>
+    </label>
+</dt>
+<dd class="clearfix swatch-attr<?php if ($_attribute->decoratedIsLast) echo ' last'; ?>">
+    <div class="input-box">
+        <select name="super_attribute[<?= $_attribute->getAttributeId() ?>]" id="attribute<?= $_attribute->getAttributeId() ?>" class="required-entry super-attribute-select no-display swatch-select">
+            <option><?= $this->__('Choose an Option...') ?></option>
+        </select>
+        <ul id="configurable_swatch_<?= $_attrCode ?>" class="configurable-swatch-list clearfix">
+            <?php foreach ($_swatchArray->options as $_option): ?>
+                <?php
+                $_optionCode = Mage::helper('configurableswatches')->getHyphenatedString($_option->label);
+                $_swatchUrl = Mage::helper('configurableswatches/productimg')->getSwatchUrl($_product, $_option->label, $_swatchInnerWidth, $_swatchInnerHeight, $_swatchType);
+                $_hasImage = !empty($_swatchUrl);
+                $_liClass = '';
+                $_aClass = 'swatch-link swatch-link-' . $_attribute->getAttributeId();
+                if ($_hasImage) {
+                    $_liClass .= $_swatchType == 'media' ? ' is-media' : '';
+                    $_aClass .= ' has-image';
+                } elseif (strlen($_option->label) > 3) {
+                    $_liClass .= ' wide-swatch';
+                }
+                ?>
+                <li class="option-<?= $_optionCode ?><?= $_liClass ?>" id="option<?= $_option->id ?>">
+                    <a href="javascript:void(0)" name="<?= $_optionCode ?>" id="swatch<?= $_option->id ?>" class="<?= $_aClass ?>" title="<?= $_option->label ?>"
+                       style="height: <?= $_swatchOuterHeight ?>px; <?php if (!$_hasImage): ?>min-<?php endif ?>width: <?= $_swatchOuterWidth ?>px;">
+                <span class="swatch-label" style="height: <?= $_swatchInnerHeight ?>px; <?php if (!$_hasImage): ?>min-<?php endif ?>width: <?= $_swatchInnerWidth ?>px; line-height: <?= $_swatchInnerHeight ?>px;">
+                <?php if ($_hasImage): ?>
+                    <img src="<?= $_swatchUrl ?>" alt="<?= $_option->label ?>" width="<?= $_swatchInnerWidth ?>" height="<?= $_swatchInnerHeight ?>" />
+                <?php else: ?>
+                    <?= $_option->label ?>
+                <?php endif ?>
+                 </span>
+                        <span class="x">X</span>
+                    </a>
+                </li>
+            <?php endforeach ?>
+        </ul>
+    </div>
+</dd>

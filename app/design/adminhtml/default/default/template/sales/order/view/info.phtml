@@ -1,0 +1,161 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2024 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_order = $this->getOrder() ?>
+<?php
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+?>
+<div class="box-left">
+    <!--Order Information-->
+    <div class="entry-edit">
+        <?php if ($_order->getEmailSent()):
+            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        else:
+            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+        endif; ?>
+        <div class="entry-edit-head">
+        <?php if ($this->getNoUseOrderLink()): ?>
+            <h4 data-copy-text="<?= $_order->getRealOrderId() ?>"><?= Mage::helper('sales')->__('Order # %s', $this->escapeHtml($_order->getRealOrderId())) ?> (<?= $_email ?>)</h4>
+        <?php else: ?>
+            <a href="<?= $this->getViewUrl($_order->getId()) ?>"><?= Mage::helper('sales')->__('Order # %s', $this->escapeHtml($_order->getRealOrderId())) ?></a>
+            <strong>(<?= $_email ?>)</strong>
+        <?php endif ?>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Order Date') ?></label></td>
+                <td class="value"><strong><?= $orderAdminDate ?></strong></td>
+            </tr>
+            <?php if ($orderAdminDate != $orderStoreDate):?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+                <td class="value"><strong><?= $orderStoreDate ?></strong></td>
+            </tr>
+            <?php endif ?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Order Status') ?></label></td>
+                <td class="value"><strong><span id="order_status"><?= $_order->getStatusLabel() ?></span></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Purchased From') ?></label></td>
+                <td class="value"><strong><?= $this->getOrderStoreName() ?></strong></td>
+            </tr>
+            <?php if($_order->getRelationChildId()): ?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Link to the New Order') ?></label></td>
+                <td class="value"><a href="<?= $this->getViewUrl($_order->getRelationChildId()) ?>">
+                    <?= $this->escapeHtml($_order->getRelationChildRealId()) ?>
+                </a></td>
+            </tr>
+            <?php endif ?>
+            <?php if($_order->getRelationParentId()): ?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Link to the Previous Order') ?></label></td>
+                <td class="value"><a href="<?= $this->getViewUrl($_order->getRelationParentId()) ?>">
+                    <?= $this->escapeHtml($_order->getRelationParentRealId()) ?>
+                </a></td>
+            </tr>
+            <?php endif ?>
+            <?php if($_order->getRemoteIp() && $this->shouldDisplayCustomerIp()): ?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                <td class="value"><strong><?= $this->escapeHtml($_order->getRemoteIp()); echo ($_order->getXForwardedFor())?' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')':'' ?></strong></td>
+            </tr>
+            <?php endif ?>
+            <?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?= $_order->getBaseToGlobalRate() ?></strong></td>
+            </tr>
+            <?php endif ?>
+            <?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?= Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?= $_order->getBaseToOrderRate() ?></strong></td>
+            </tr>
+            <?php endif ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4><?= Mage::helper('sales')->__('Account Information') ?></h4>
+            <div class="tools"><?= $this->getAccountEditLink() ?></div>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?= Mage::helper('sales')->__('Customer Name') ?></label></td>
+                    <td class="value">
+                    <?php if ($_customerUrl=$this->getCustomerViewUrl()) : ?>
+                        <a href="<?= $_customerUrl ?>" target="_blank"><strong><?= $this->escapeHtml($_order->getCustomerName()) ?></strong></a>
+                    <?php else: ?>
+                        <strong><?= $this->escapeHtml($_order->getCustomerName()) ?></strong>
+                    <?php endif ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?= Mage::helper('sales')->__('Email') ?></label></td>
+                    <td class="value"><a href="mailto:<?= $this->escapeHtml($_order->getCustomerEmail()) ?>" data-copy-text="<?= $_order->getCustomerEmail()?>"><strong><?= $this->escapeHtml($_order->getCustomerEmail()) ?></strong></a></td>
+                </tr>
+                <?php if ($_groupName = $this->getCustomerGroupName()) : ?>
+                <tr>
+                    <td class="label"><label><?= Mage::helper('sales')->__('Customer Group') ?></label></td>
+                    <td class="value"><strong><?= $this->escapeHtml($_groupName) ?></strong></td>
+                </tr>
+                <?php endif ?>
+                <?php foreach ($this->getCustomerAccountData() as $data):?>
+                <tr>
+                    <td class="label"><label><?= $data['label'] ?></label></td>
+                    <td class="value"><strong><?= $data['value'] ?></strong></td>
+                </tr>
+                <?php endforeach ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4><?= Mage::helper('sales')->__('Billing Address') ?></h4>
+            <div class="tools"><?= $this->getAddressEditLink($_order->getBillingAddress()) ?></div>
+        </div>
+        <fieldset>
+            <address><?= $this->maliciousCodeFilter($_order->getBillingAddress()->getFormated(true)) ?></address>
+        </fieldset>
+    </div>
+</div>
+<?php if (!$this->getOrder()->getIsVirtual()): ?>
+<div class="box-right">
+    <!--Shipping Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4><?= Mage::helper('sales')->__('Shipping Address') ?></h4>
+            <div class="tools"><?= $this->getAddressEditLink($_order->getShippingAddress()) ?></div>
+        </div>
+        <fieldset>
+            <address><?= $this->maliciousCodeFilter($_order->getShippingAddress()->getFormated(true)) ?></address>
+        </fieldset>
+    </div>
+</div>
+<div class="clear"></div>
+<?php endif ?>

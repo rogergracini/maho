@@ -1,0 +1,25 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Wishlist_Block_Customer_Wishlist_Render_Item_Price */
+?>
+
+<?= $this->getCleanProductPriceHtml() ?>
+
+<?php /* @var $product Mage_Catalog_Model_Product */ ?>
+<?php $product = $this->getProduct(); ?>
+<?php $finalPrice = $product->getFinalPrice(1); ?>
+<?php if ($product->canConfigure()): ?>
+    <p class="configured-price">
+        <span class="price-label"><?= Mage::helper('wishlist')->__('Configured Price:') ?></span>
+        <span class="price"><?= Mage::helper('core')->currency($finalPrice, true, false) ?></span>
+    </p>
+<?php endif ?>

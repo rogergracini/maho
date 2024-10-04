@@ -1,0 +1,42 @@
+<?php
+/**
+ * Maho
+ *
+ * @category   Mage
+ * @package    Mage_Tax
+ * @copyright  Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright  Copyright (c) 2020-2023 The OpenMage Contributors (https://openmage.org)
+ * @copyright  Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license    https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Class Mage_Tax_Model_Class_Source_Customer
+ *
+ * @category   Mage
+ * @package    Mage_Tax
+ */
+class Mage_Tax_Model_Class_Source_Customer extends Mage_Eav_Model_Entity_Attribute_Source_Abstract
+{
+    /**
+     * @return array
+     */
+    #[\Override]
+    public function getAllOptions()
+    {
+        if (!$this->_options) {
+            $this->_options = Mage::getResourceModel('tax/class_collection')
+                ->addFieldToFilter('class_type', Mage_Tax_Model_Class::TAX_CLASS_TYPE_CUSTOMER)
+                ->load()->toOptionArray();
+        }
+        return $this->_options;
+    }
+
+    /**
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        return $this->getAllOptions();
+    }
+}

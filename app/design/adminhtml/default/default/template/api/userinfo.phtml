@@ -1,0 +1,38 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;">
+                <h3>
+                  <?php if($this->getUser()->getUserId()): ?>
+                  <?php $_userName = $this->getUser()->getFirstname() . ' ' . $this->getUser()->getLastname() ?>
+                  <?= $this->__("Edit User '%s'", $_userName) ?>
+                  <?php else: ?>
+                  <?= $this->__('Add New User') ?>
+                  <?php endif ?>
+                </h3>
+            </td>
+            <td class="form-buttons">
+            <?= $this->getBackButtonHtml() ?>
+            <?= $this->getResetButtonHtml() ?>
+            <?= $this->getDeleteButtonHtml() ?>
+            <?= $this->getSaveButtonHtml() ?>
+   </table>
+</div>
+<form action="<?= $this->getUrl('*/*/saveuser') ?>" method="post" id="user_edit_form">
+    <?= $this->getBlockHtml('formkey') ?>
+</form>
+<script type="text/javascript">
+    var userForm = new varienForm('user_edit_form');
+</script>

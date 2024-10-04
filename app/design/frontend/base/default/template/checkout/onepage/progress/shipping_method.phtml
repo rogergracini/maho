@@ -1,0 +1,43 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if ($this->getCheckout()->getStepData('shipping_method', 'complete')): ?>
+<dt class="complete">
+    <?= $this->__('Shipping Method') ?> <span class="changelink"><span class="separator">|</span> <a
+        href="#shipping_method"
+        onclick="checkout.changeSection('opc-shipping_method'); return false;"><?= $this->__('Change') ?></a></span>
+</dt>
+<dd class="complete">
+    <?php if ($this->getShippingMethod()): ?>
+    <?= $this->getShippingDescription() ?>
+
+    <?php $_excl = $this->getShippingPriceExclTax(); ?>
+    <?php $_incl = $this->getShippingPriceInclTax(); ?>
+    <?php if ($this->helper('tax')->displayShippingPriceIncludingTax()): ?>
+        <?= $_incl ?>
+        <?php else: ?>
+        <?= $_excl ?>
+        <?php endif ?>
+    <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+        (<?= $this->__('Incl. Tax') ?> <?= $_incl ?>)
+        <?php endif ?>
+
+    <?php else: ?>
+    <?= $this->__('Shipping method has not been selected yet') ?>
+    <?php endif ?>
+</dd>
+<?php else: ?>
+<dt>
+    <?= $this->__('Shipping Method') ?>
+</dt>
+<?php endif ?>
+

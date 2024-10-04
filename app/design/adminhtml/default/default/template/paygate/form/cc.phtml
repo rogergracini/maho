@@ -1,0 +1,60 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_formMessage=$this->getPartialAuthorizationFormMessage(); ?>
+<?php $_isPartialAuthorization=$this->isPartialAuthorization(); ?>
+<?php if ($_isPartialAuthorization || $_formMessage): ?>
+    <div class="form-list" id="payment_form_<?= $this->getMethodCode() ?>_before" style="display:none;">
+        <?php if ($_formMessage): ?>
+        <?= $this->showNoticeMessage($_formMessage) ?>
+        <?php endif ?>
+
+        <?php if ($_isPartialAuthorization): ?>
+                <?= $this->getChildHtml('cards') ?>
+                <div class="release-amounts">
+                    <?= $this->getCancelButtonHtml() ?>
+                    <p class="note"><?= $this->__('To cancel pending authorizations and release amounts that have already been processed during this payment, click Cancel.') ?></p>
+                </div>
+                <?= $this->showNoticeMessage($this->__('Please enter another credit card number to complete your purchase.')) ?>
+                    <script type="text/javascript">
+                    //<![CDATA[
+                    function cancelPaymentAuthorizations(){
+                        new Ajax.Request('<?= $this->getAdminCancelUrl() ?>', {
+                            onSuccess : function(transport) {
+                                try{
+                                    response = eval('(' + transport.responseText + ')');
+                                } catch (e) {
+                                    response = {};
+                                }
+
+                                if (response.success) {
+                                    order.loadArea(['billing_method','totals'], true, []);
+                                } else {
+                                    var msg = response.error_message;
+                                    if (msg) {
+                                        alert(msg);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    <?php if ($_message = $this->getPartialAuthorizationConfirmationMessage()): ?>
+                    if (!confirm('<?= Mage::helper('core')->jsQuoteEscape($_message) ?>')) {
+                        cancelPaymentAuthorizations();
+                    }
+                    <?php endif ?>
+                    //]]>
+                    </script>
+        <?php endif ?>
+    </div>
+<?php endif ?>
+<?= $this->getChildHtml('method_form_block') ?>

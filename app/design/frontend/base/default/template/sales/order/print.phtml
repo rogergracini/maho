@@ -1,0 +1,70 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_order = $this->getOrder() ?>
+<h1><?= $this->__('Order #%s', $_order->getRealOrderId()) ?></h1>
+<p class="order-date"><?= $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+<div class="col2-set">
+    <?php if (!$_order->getIsVirtual()): ?>
+    <div class="col-1">
+        <h2><?= $this->__('Shipping Address') ?></h2>
+        <address><?= $_order->getShippingAddress()->format('html') ?></address>
+    </div>
+    <div class="col-2">
+    <?php else: ?>
+    <div class="col-1">
+    <?php endif ?>
+        <h2><?= $this->__('Billing Address') ?></h2>
+        <address><?= $_order->getBillingAddress()->format('html') ?></address>
+    </div>
+<?php if (!$_order->getIsVirtual()): ?>
+</div>
+<div class="col2-set">
+    <div class="col-1">
+        <h2><?= $this->__('Shipping Method') ?></h2>
+         <?= $this->escapeHtml($_order->getShippingDescription()) ?>
+    </div>
+<?php endif ?>
+    <div class="col-2">
+        <h2><?= $this->__('Payment Method') ?></h2>
+        <?= $this->getPaymentInfoHtml() ?>
+    </div>
+</div>
+<h2><?= $this->__('Items Ordered') ?></h2>
+<table class="data-table" id="my-orders-table">
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?= $this->__('Product Name') ?></th>
+            <th><?= $this->__('SKU') ?></th>
+            <th class="a-right"><?= $this->__('Price') ?></th>
+            <th class="a-center"><?= $this->__('Qty') ?></th>
+            <th class="a-right"><?= $this->__('Subtotal') ?></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <?= $this->getChildHtml('order_totals') ?>
+    </tfoot>
+    <?php $_items = $_order->getItemsCollection(); ?>
+    <?php $_count = $_items->count(); ?>
+    <?php foreach ($_items as $_item): ?>
+    <?php if ($_item->getParentItem()) continue; ?>
+    <tbody>
+        <?= $this->getItemHtml($_item) ?>
+    </tbody>
+        <?php endforeach ?>
+</table>
+<script type="text/javascript">window.print();</script>

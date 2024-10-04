@@ -1,0 +1,25 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Adminhtml_Block_Widget_Accordion
+ */
+?>
+<dl id="tab_content_<?= $this->getHtmlId() ?>" name="tab_content_<?= $this->getHtmlId() ?>" class="accordion">
+<?php foreach ($this->getItems() as $_item): ?>
+    <?= $this->getChildHtml($_item->getId()) ?>
+<?php endforeach ?>
+</dl>
+<script type="text/javascript">
+    tab_content_<?= $this->getHtmlId() ?>AccordionJs = new varienAccordion('tab_content_<?= $this->getHtmlId() ?>', '<?= $this->getShowOnlyOne() ?>');
+</script>

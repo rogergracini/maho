@@ -1,0 +1,45 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?= $this->getFormInitScripts() ?>
+<div class="content-header">
+    <?= $this->getHeaderHtml() ?>
+    <p class="content-buttons form-buttons"><?= $this->getButtonsHtml('header') ?></p>
+</div>
+<?php if( !$this->isSingleStoreMode() ): ?>
+    <?= $this->getStoreSwitcherHtml() ?>
+<?php endif ?>
+
+<form action="<?= $this->getSaveUrl() ?>" method="post" id="edit_form">
+    <?= $this->getFormHtml() ?>
+
+    <?= $this->getTagAssignAccordionHtml() ?>
+
+<script type="text/javascript">
+    function saveAndContinueEdit(url) {
+        var tagForm = new varienForm('edit_form');
+        tagForm.submit(url);
+    }
+</script>
+
+</form>
+
+<?php if ($this->hasFooterButtons()): ?>
+    <div class="content-footer">
+        <p class="content-buttons form-buttons"><?= $this->getButtonsHtml('footer') ?></p>
+    </div>
+<?php endif ?>
+<script type="text/javascript">
+    var editForm = new varienForm('edit_form', '<?= $this->getValidationUrl() ?>');
+</script>
+<?= $this->getFormScripts() ?>
+<?= $this->getAcordionsHtml() ?>

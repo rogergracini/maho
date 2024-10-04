@@ -1,0 +1,78 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+if ($this->getIsShipping()):
+    $_fieldsContainerId = 'order-shipping_address_fields';
+    $_addressChoiceContainerId = 'order-shipping_address_choice';
+?>
+    <script type="text/javascript">
+    order.shippingAddressContainer = '<?= $_fieldsContainerId ?>';
+    order.setAddresses(<?= $this->getAddressCollectionJson() ?>);
+    </script>
+<?php else:
+    $_fieldsContainerId = 'order-billing_address_fields';
+    $_addressChoiceContainerId = 'order-billing_address_choice';
+?>
+    <script type="text/javascript">
+    order.billingAddressContainer = '<?= $_fieldsContainerId ?>';
+    </script>
+<?php endif ?>
+<div class="entry-edit">
+
+    <div class="entry-edit-head">
+        <h4 class="icon-head fieldset-legend <?= $this->getHeaderCssClass() ?>"><?= $this->getHeaderText() ?></h4>
+    </div>
+
+    <fieldset class="np">
+    <div id = "<?= $_addressChoiceContainerId ?>" class="order-choose-address">
+        <?= Mage::helper('sales')->__('Select from existing customer addresses:') ?><br/>
+        <?php $_id = $this->getForm()->getHtmlIdPrefix() . 'customer_address_id' ?>
+        <select id="<?= $_id ?>"  name="<?= $this->getForm()->getHtmlNamePrefix() ?>[customer_address_id]" style="width:97.5%;" onchange="order.selectAddress(this, '<?= $_fieldsContainerId ?>')">
+            <option value=""><?= Mage::helper('sales')->__('Add New Address') ?></option>
+            <?php foreach ($this->getAddressCollection() as $_address): ?>
+            <?php //if ($this->getAddressAsString($_address) != $this->getAddressAsString($this->getAddress())): ?>
+                <option value="<?= $_address->getId() ?>"<?php if ($_address->getId() == $this->getAddressId()): ?> selected="selected"<?php endif ?>>
+                    <?= $this->getAddressAsString($_address) ?>
+                </option>
+            <?php //endif ?>
+            <?php endforeach ?>
+
+        </select>
+        <br/>
+        <?php if ($this->getIsShipping()): ?>
+            <input type="checkbox" id="order-shipping_as_billing" name="shipping_as_billing" value="1" onclick="order.setShippingAsBilling(this.checked)" <?php if ($this->getIsAsBilling()): ?>checked<?php endif ?>/>
+            <label for="order-shipping_as_billing" class="no-float"><?= Mage::helper('sales')->__('Same As Billing Address') ?></label>
+        <?php else: ?>
+            &nbsp;
+        <?php endif ?>
+    </div>
+
+    <div class="order-address" id="<?= $_fieldsContainerId ?>">
+        <div class="content">
+            <?= $this->getForm()->toHtml() ?>
+        </div>
+        <div class="order-save-in-address-book">
+            <input name="<?= $this->getForm()->getHtmlNamePrefix() ?>[save_in_address_book]" type="checkbox" id="<?= $this->getForm()->getHtmlIdPrefix() ?>save_in_address_book" value="1" <?php if (!$this->getDontSaveInAddressBook() && $this->getAddress()->getSaveInAddressBook()):?> checked="checked"<?php endif ?>/>
+            <label for="<?= $this->getForm()->getHtmlIdPrefix() ?>save_in_address_book"><?= Mage::helper('sales')->__('Save in address book') ?></label>
+        </div>
+    </div>
+    <?php $hideElement = 'address-' . ($this->getIsShipping() ? 'shipping' : 'billing') . '-overlay'; ?>
+    <div style="display:none;" id="<?= $hideElement ?>" class="overlay"><span><?= $this->__('Shipping address selection is not applicable') ?></span></div>
+    <script type="text/javascript">
+        order.bindAddressFields('<?= $_fieldsContainerId ?>');
+        order.bindAddressFields('<?= $_addressChoiceContainerId ?>');
+        <?php if ($this->getIsShipping() && $this->getIsAsBilling()): ?>
+        order.disableShippingAddress(true);
+        <?php endif ?>
+    </script>
+    </fieldset>
+</div>

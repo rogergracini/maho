@@ -1,0 +1,41 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="wrapper-popup">
+    <div class="middle" id="anchor-content">
+        <div id="page:main-container">
+        <?php if($this->getChildHtml('left')): ?>
+            <div class="columns <?= $this->getContainerCssClass() ?>" id="page:container">
+                <div id="page:left" class="side-col">
+                    <?= $this->getChildHtml('left') ?>
+                </div>
+                <div class="main-col" id="content">
+                    <div class="main-col-inner">
+                        <div id="messages"><?= $this->getMessagesBlock()->toHtml() ?></div>
+                        <?= $this->getChildHtml('content') ?>
+                    </div>
+                </div>
+            </div>
+      <?php else: ?>
+          <div id="messages"><?= $this->getMessagesBlock()->toHtml() ?></div>
+          <?= $this->getChildHtml('content') ?>
+      <?php endif ?>
+         </div>
+    </div>
+    <?php if($this->getChildHtml('footer')): ?>
+    <div class="footer">
+        <?= $this->getChildHtml('footer') ?>
+    </div>
+    <?php endif ?>
+    <?= $this->getChildHtml('js') ?>
+    <?= $this->getChildHtml('profiler') ?>
+</div>

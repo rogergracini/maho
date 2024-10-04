@@ -1,0 +1,24 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /* @var $this Mage_Catalog_Block_Product_View_Abstract */?>
+<?php $_product = $this->getProduct() ?>
+
+<?php if ($this->displayProductStockStatus()): ?>
+    <?php if ($_product->isAvailable()): ?>
+        <p class="availability in-stock"><?= $this->__('Availability:') ?> <span><?= $this->__('In stock') ?></span></p>
+    <?php else: ?>
+        <p class="availability out-of-stock"><?= $this->__('Availability:') ?> <span><?= $this->__('Out of stock') ?></span></p>
+    <?php endif ?>
+<?php endif ?>
+<?= $this->getChildHtml('product_type_data_extra') ?>
+<?= $this->getPriceHtml($_product) ?>

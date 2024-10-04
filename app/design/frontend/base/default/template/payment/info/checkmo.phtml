@@ -1,0 +1,24 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<p><?= $this->escapeHtml($this->getMethod()->getTitle()) ?></p>
+<?php if($this->getInfo()->getAdditionalData()): ?>
+    <?php if($this->getPayableTo()): ?>
+        <p><strong><?= $this->__('Make Check payable to:') ?></strong> <?= $this->escapeHtml($this->getPayableTo()) ?></p>
+    <?php endif ?>
+    <?php if($this->getMailingAddress()): ?>
+        <p><strong><?= Mage::helper('payment')->__('Send Check to:') ?></strong></p>
+        <address class="checkmo-mailing-address">
+            <?= nl2br($this->escapeHtml($this->getMailingAddress())) ?>
+        </address>
+    <?php endif ?>
+<?php endif ?>

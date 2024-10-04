@@ -1,0 +1,54 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php global $taxIter; $taxIter++; ?>
+<?php if ($this->helper('tax')->displayFullSummary() && $this->getTotal()->getValue()!=0): ?>
+<?php $isTop = 1; ?>
+            <?php foreach ($this->getTotal()->getFullInfo() as $info): ?>
+                <?php if (isset($info['hidden']) && $info['hidden']) continue; ?>
+                <?php $percent = $info['percent']; ?>
+                <?php $amount = $info['amount']; ?>
+                <?php $rates = $info['rates']; ?>
+                <?php $isFirst = 1; ?>
+
+                <?php foreach ($rates as $rate): ?>
+                <tr class="summary-details-<?= $taxIter ?> summary-details<?php if ($isTop): echo ' summary-details-first'; endif; ?>" style="display:none;">
+                    <td class="a-right" style="<?= $this->getTotal()->getStyle() ?>" colspan="<?= $this->getColspan() ?>">
+                        <?= $this->escapeHtml($rate['title']) ?>
+                        <?php if (!is_null($rate['percent'])): ?>
+                            (<?= (float)$rate['percent'] ?>%)
+                        <?php endif ?>
+                        <br />
+                    </td>
+                    <?php if ($isFirst): ?>
+                        <td rowspan="<?= count($rates) ?>" class="a-right" style="<?= $this->getTotal()->getStyle() ?>">
+                            <?= $this->helper('checkout')->formatPrice($amount) ?>
+                        </td>
+                    <?php endif ?>
+                </tr>
+                <?php $isFirst = 0; ?>
+                <?php $isTop = 0; ?>
+                <?php endforeach ?>
+            <?php endforeach ?>
+<?php endif ?>
+<tr<?php if ($this->helper('tax')->displayFullSummary() && $this->getTotal()->getValue()!=0): ?> class="summary-total" onclick="expandDetails(this, '.summary-details-<?= $taxIter;?>')"<?php endif ?>>
+    <td class="a-right" colspan="<?= $this->getColspan() ?>" style="<?= $this->getTotal()->getStyle() ?>">
+        <?php if ($this->helper('tax')->displayFullSummary()): ?>
+            <div class="summary-collapse"><?= $this->getTotal()->getTitle() ?></div>
+        <?php else: ?>
+            <?= $this->getTotal()->getTitle() ?>
+        <?php endif ?>
+    </td>
+    <td class="a-right" style="<?= $this->getTotal()->getStyle() ?>">
+        <strong><?= $this->helper('checkout')->formatPrice($this->getTotal()->getValue()) ?></strong>
+    </td>
+</tr>

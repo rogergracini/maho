@@ -1,0 +1,24 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+
+<?php  $_order = $this->getOrder() ?>
+<?php if($this->helper('rss/order')->isStatusNotificationAllow()): ?>
+    <a href="<?= $this->helper('rss/order')->getStatusHistoryRssUrl($_order) ?>" class="link-rss f-none"><?= $this->__('Subscribe to Order Status') ?></a>
+    <span class="separator">|</span>
+<?php endif ?>
+<?php if ($this->helper('sales/reorder')->canReorder($_order)) : ?>
+    <a href="<?= $this->getReorderUrl($_order) ?>" class="link-reorder"><?= $this->__('Reorder') ?></a>
+    <span class="separator">|</span>
+<?php endif ?>
+<a href="<?= $this->getPrintUrl($_order) ?>" class="link-print" onclick="this.target='_blank';"><?= $this->__('Print Order') ?></a>
+<?= $this->getChildHtml() ?>

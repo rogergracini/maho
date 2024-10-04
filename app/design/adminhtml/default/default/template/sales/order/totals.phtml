@@ -1,0 +1,72 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /*$_source = $this->getSource(); ?>
+<?php $this->setPriceDataObject($_source) ?>
+<?php if ($_source): ?>
+<table cellspacing="0" width="100%">
+    <?= $this->getChildHtml('main') ?>
+    <?= $this->getChildHtml('footer') ?>
+</table>
+<?php endif */ ?>
+<table cellspacing="0" width="100%">
+    <col />
+    <col width="1" />
+    <?php $_totals = $this->getTotals('footer')?>
+    <?php if ($_totals):?>
+    <tfoot>
+    <?php foreach ($this->getTotals('footer') as $_code => $_total): ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?= $this->getChildHtml($_total->getBlockName(), false) ?>
+        <?php else: ?>
+        <tr class="<?= $_code ?>">
+            <td <?= $this->getLabelProperties() ?> class="label">
+                <strong><?= $this->escapeHtml($_total->getLabel()) ?></strong>
+            </td>
+            <td <?= $this->getValueProperties() ?> class="emph">
+                <strong><?= $this->formatValue($_total) ?></strong>
+            </td>
+        </tr>
+        <?php endif ?>
+    <?php endforeach ?>
+    </tfoot>
+    <?php endif ?>
+
+    <?php $_totals = $this->getTotals('')?>
+    <?php if ($_totals):?>
+    <tbody>
+    <?php foreach ($_totals as $_code => $_total): ?>
+        <?php if ($_total->getBlockName()): ?>
+            <?= $this->getChildHtml($_total->getBlockName(), false) ?>
+        <?php else: ?>
+        <tr class="<?= $_code ?>">
+            <td <?= $this->getLabelProperties() ?> class="label">
+                <?php if ($_total->getStrong()):?>
+                <strong><?= $this->escapeHtml($_total->getLabel()) ?></strong>
+                <?php else: ?>
+                <?= $this->escapeHtml($_total->getLabel()) ?>
+                <?php endif ?>
+            </td>
+            <?php if ($_total->getStrong()):?>
+            <td <?= $this->getValueProperties() ?> class="emph">
+                <strong><?= $this->formatValue($_total) ?></strong>
+            <?php else: ?>
+            <td <?= $this->getValueProperties() ?>>
+                <?= $this->formatValue($_total) ?>
+            <?php endif ?>
+            </td>
+        </tr>
+        <?php endif ?>
+    <?php endforeach ?>
+    </tbody>
+    <?php endif ?>
+</table>

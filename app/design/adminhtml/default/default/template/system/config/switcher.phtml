@@ -1,0 +1,35 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/* @var $this Mage_Core_Block_Template */ ?>
+<div class="switcher">
+    <label for="store_switcher"><?= $this->__('Current Configuration Scope:') ?></label>
+    <select id="store_switcher" class="system-config-store-switcher" onchange="location.href=this.options[this.selectedIndex].getAttribute('url')">
+    <?php foreach ($this->getStoreSelectOptions() as $_value => $_option): ?>
+    <?php if (isset($_option['is_group'])): ?>
+        <?php if ($_option['is_close']): ?>
+            </optgroup>
+        <?php else: ?>
+            <optgroup label="<?= $this->escapeHtml($_option['label']) ?>" style="<?= $_option['style'] ?>">
+        <?php endif ?>
+        <?php continue ?>
+    <?php endif ?>
+      <option value="<?= $this->escapeHtml($_value) ?>" url="<?= $_option['url'] ?>" <?= $_option['selected'] ? 'selected="selected"' : '' ?> style="<?= $_option['style'] ?>">
+          <?= $this->escapeHtml($_option['label']) ?>
+      </option>
+    <?php endforeach ?>
+    </select>
+    <?php if (Mage::getSingleton('admin/session')->isAllowed('system/store')): ?>
+    <p style="margin:10px 0 0;">
+        <a href="<?= $this->getUrl('*/system_store') ?>"><?= $this->__('Manage Stores') ?></a>
+    </p>
+    <?php endif ?>
+</div>

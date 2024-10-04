@@ -1,0 +1,89 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2023 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Temlate for Mage_Customer_Block_Address_Book block
+ * @var $test Mage_Customer_Block_Address_Book
+ */
+?>
+<div class="page-title title-buttons">
+    <h1><?= $this->__('Address Book') ?></h1>
+    <button type="button" title="<?= Mage::helper('core')->quoteEscape($this->__('Add New Address')) ?>" class="button" onclick="window.location='<?= $this->getAddAddressUrl() ?>';"><?= $this->__('Add New Address') ?></button>
+</div>
+<?= $this->getMessagesBlock()->toHtml() ?>
+<div class="col2-set addresses-list">
+    <div class="col-1 addresses-primary">
+        <h2><?= $this->__('Default Addresses') ?></h2>
+        <ol>
+        <?php if ($_pAddsses = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling()): ?>
+            <li class="item">
+                <h3><?= $this->__('Default Billing Address') ?></h3>
+                <address>
+                    <?= $this->getAddressHtml(Mage::getSingleton('customer/session')->getCustomer()->getAddressById($_pAddsses)) ?>
+                </address>
+                <p><a href="<?= $this->getAddressEditUrl(Mage::getSingleton('customer/session')->getCustomer()->getAddressById($_pAddsses)) ?>"><?= $this->__('Change Billing Address') ?></a></p>
+           </li>
+        <?php else: ?>
+            <li class="item">
+                <h3><?= $this->__('Default Billing Address') ?></h3>
+                <?= $this->__('You have no default billing address in your address book.') ?>
+            </li>
+        <?php endif ?>
+
+        <?php if ($_pAddsses = Mage::getSingleton('customer/session')->getCustomer()->getDefaultShipping()): ?>
+            <li class="item">
+                <h3><?= $this->__('Default Shipping Address') ?></h3>
+                <address>
+                    <?= $this->getAddressHtml(Mage::getSingleton('customer/session')->getCustomer()->getAddressById($_pAddsses)) ?>
+                </address>
+                <p><a href="<?= $this->getAddressEditUrl(Mage::getSingleton('customer/session')->getCustomer()->getAddressById($_pAddsses)) ?>"><?= $this->__('Change Shipping Address') ?></a></p>
+            </li>
+        <?php else: ?>
+            <li class="item empty">
+                <h3><?= $this->__('Default Shipping Address') ?></h3>
+                <p><?= $this->__('You have no default shipping address in your address book.') ?></p>
+            </li>
+        <?php endif ?>
+        </ol>
+    </div>
+    <div class="col-2 addresses-additional">
+        <h2><?= $this->__('Additional Address Entries') ?></h2>
+        <ol>
+        <?php if ($_pAddsses = $this->getAdditionalAddresses()): ?>
+            <?php foreach($_pAddsses as $_address): ?>
+            <li class="item">
+                <address>
+                    <?= $this->getAddressHtml($_address) ?>
+                </address>
+                <p><a href="<?= $this->getUrl('customer/address/edit', ['id' => $_address->getId()]) ?>"><?= $this->__('Edit Address') ?></a> <span class="separator">|</span> <a href="#" class="link-remove" onclick="return deleteAddress('<?= $_address->getId() ?>');"><?= $this->__('Delete Address') ?></a></p>
+            </li>
+            <?php endforeach ?>
+        <?php else: ?>
+            <li class="item empty">
+                <p><?= $this->__('You have no additional address entries in your address book.') ?></p>
+            </li>
+        <?php endif ?>
+        </ol>
+    </div>
+</div>
+<div class="buttons-set">
+    <p class="back-link"><a href="<?= $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?= $this->__('Back') ?></a></p>
+</div>
+<script type="text/javascript">
+    function deleteAddress(addressId) {
+        if (confirm("<?= Mage::helper('core')->jsQuoteEscape($this->__('Are you sure you want to delete this address?')) ?>")) {
+            window.location = "<?= $this->getDeleteUrl() ?>id/" + addressId + "/";
+        }
+        return false;
+    }
+</script>

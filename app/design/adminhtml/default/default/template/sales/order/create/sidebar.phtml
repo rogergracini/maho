@@ -1,0 +1,53 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="entry-edit"><div class="entry-edit-head"><h4><?= $this->helper('sales')->__('Customer\'s Current Activities') ?></h4></div></div>
+<div class="create-order-sidebar-container">
+<?= $this->getChildHtml('top_button') ?>
+<?php foreach ($this->getChild() as $_child): ?>
+    <?php $_alias = $_child->getBlockAlias(); ?>
+    <?php if ($_alias != 'top_button' && $_alias != 'bottom_button'): ?>
+        <div id="order-sidebar_<?= $_alias ?>">
+            <?php if($this->canDisplay($_child)): ?>
+                <?= $this->getChildHtml($_alias) ?>
+            <?php endif ?>
+        </div>
+    <?php endif ?>
+<?php endforeach ?>
+<?= $this->getChildHtml('bottom_button') ?>
+</div>
+<script>
+function addSidebarCompositeListType() {
+    productConfigure.addListType('sidebar', {
+        urlFetch: '<?= $this->getUrl('*/sales_order_create/configureProductToAdd') ?>',
+        urlConfirm: '<?= $this->getUrl('*/sales_order_create/addConfigured') ?>'
+    });
+    productConfigure.addListType('sidebar_wishlist', {
+        urlFetch: '<?= $this->getUrl('*/customer_wishlist_product_composite_wishlist/configure') ?>',
+        urlConfirm: '<?= $this->getUrl('*/sales_order_create/addConfigured') ?>'
+    });
+}
+
+if (typeof(sidebarListTypeWorkedOn) == 'undefined') {
+    sidebarListTypeWorkedOn = false;
+}
+if (!sidebarListTypeWorkedOn) {
+    if (typeof(productConfigure) == 'undefined') {
+        Event.observe(window, 'load',  function(){
+            setTimeout(addSidebarCompositeListType, 10);
+        })
+    } else {
+        addSidebarCompositeListType();
+    }
+    sidebarListTypeWorkedOn = true;
+}
+</script>

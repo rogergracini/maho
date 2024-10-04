@@ -1,0 +1,8 @@
+# Disable PHP code execution
+<IfModule mod_php.c>
+    php_flag engine 0
+</IfModule>
+
+# Disable CGI scripts execution
+AddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi
+Options -ExecCGI

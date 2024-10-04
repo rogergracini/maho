@@ -1,0 +1,32 @@
+<?php
+/**
+ * Maho
+ *
+ * @category   Mage
+ * @package    Mage_Adminhtml
+ * @copyright  Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright  Copyright (c) 2022-2023 The OpenMage Contributors (https://openmage.org)
+ * @license    https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+/**
+ * Source model of customer address types
+ *
+ * @category   Mage
+ * @package    Mage_Adminhtml
+ */
+class Mage_Adminhtml_Model_System_Config_Source_Customer_Address_Type
+{
+    /**
+     * Retrieve possible customer address types
+     *
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        return [
+            Mage_Customer_Model_Address_Abstract::TYPE_BILLING => Mage::helper('adminhtml')->__('Billing Address'),
+            Mage_Customer_Model_Address_Abstract::TYPE_SHIPPING => Mage::helper('adminhtml')->__('Shipping Address')
+        ];
+    }
+}

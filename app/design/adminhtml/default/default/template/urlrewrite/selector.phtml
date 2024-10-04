@@ -1,0 +1,36 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Urlrewrites edit mode selector
+ *
+ * @see Mage_Adminhtml_Block_Urlrewrite_Selector
+ */
+?>
+<div class="entry-edit">
+<div class="fieldset">
+
+<table cellspacing="0" class="form-list">
+    <tr>
+        <td class="label"><?= $this->getSelectorLabel() ?></td>
+        <td class="value">
+            <?php $url = Mage::helper('adminhtml')->getUrl('*/*/*')?>
+            <select class="select" onchange="window.location = this.value;">
+            <?php foreach ($this->getModes() as $mode => $label): ?>
+                <option <?= ($this->isMode($mode) ? 'selected="selected" ' :'' ) ?>value="<?= $url . $mode ?>"><?= $label ?></option>
+            <?php endforeach ?>
+            </select>
+        </td>
+    </tr>
+</table>
+</div>
+</div>

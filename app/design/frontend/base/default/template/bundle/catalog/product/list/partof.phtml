@@ -1,0 +1,37 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if($this->getItemCollection()->getSize()): ?>
+<div class="box-collateral box-up-sell">
+    <h2><?= $this->__('This product is also part of bundle(s)') ?></h2>
+    <table class="products-grid" id="bundle-product-table">
+    <?php // $this->setColumnCount(4); // uncomment this line if you want to have another number of columns ?>
+    <?php $this->resetItemsIterator() ?>
+    <?php for($_i=0;$_i<$this->getRowCount();$_i++): ?>
+        <tr>
+        <?php for($_j=0;$_j<$this->getColumnCount();$_j++): ?>
+            <?php if($_bundle=$this->getIterableItem()): ?>
+            <td>
+                <a href="<?= $_bundle->getProductUrl() ?>" title="<?= $this->escapeHtml($_bundle->getName()) ?>" class="product-image"><img src="<?= $this->helper('catalog/image')->init($_bundle, 'small_image')->resize(125) ?>" width="125" height="125" alt="<?= $this->escapeHtml($_bundle->getName()) ?>" /></a>
+                <h3 class="product-name"><a href="<?= $_bundle->getProductUrl() ?>"><?= $this->escapeHtml($_bundle->getName()) ?></a></h3>
+                <?= $this->getPriceHtml($_bundle, true) ?>
+                <?= $this->getReviewsSummaryHtml($_bundle) ?>
+            </td>
+            <?php else: ?>
+            <td class="empty">&nbsp;</td>
+            <?php endif ?>
+        <?php endfor ?>
+        </tr>
+    <?php endfor ?>
+    </table>
+</div>
+<?php endif ?>

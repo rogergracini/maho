@@ -1,0 +1,32 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="entry-edit-head">
+    <h4><?= Mage::helper('rating')->__('Assigned Options') ?></h4>
+</div>
+<fieldset id="options_form">
+<?php if( !$options ): ?>
+    <?php for( $_i=1;$_i<=5;$_i++ ): ?>
+        <span class="field-row">
+            <label for="option_<?= $_i ?>"><?= Mage::helper('rating')->__('Option Title:') ?></label>
+            <input id="option_<?= $_i ?>" name="option[<?= $_i ?>][code]" value="<?= $_i ?>" class="input-text" type="text" />
+        </span>
+    <?php endfor ?>
+<?php elseif( $options->getSize() > 0 ): ?>
+    <?php foreach($options->getItems() as $_item): ?>
+        <span class="field-row">
+            <label for="option_<?= $_item->getId() ?>"><?= Mage::helper('rating')->__('Option Title:') ?></label>
+            <input id="option_<?= $_item->getId() ?>" name="option[<?= $_item->getId() ?>][code]" value="<?= $_item->getCode() ?>" class="input-text" type="text" />
+        </span>
+    <?php endforeach ?>
+<?php endif ?>
+</fieldset>

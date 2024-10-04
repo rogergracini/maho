@@ -1,0 +1,29 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @var $this Mage_Sales_Block_Order_Comments
+ * @see Mage_Sales_Block_Order_Comments
+ */
+?>
+<?php if ($this->hasComments()):?>
+    <div class="order-additional order-comments">
+        <h2 class="sub-title"><?= $this->getTitle() ?></h2>
+        <dl class="order-about">
+            <?php foreach ($this->getComments() as $_commentItem): ?>
+                <dt><?= $this->formatDate($_commentItem->getCreatedAtStoreDate(), 'medium', true) ?></dt>
+                <dd><?= $this->escapeHtml($_commentItem->getComment()) ?></dd>
+            <?php endforeach ?>
+        </dl>
+    </div>
+<?php endif ?>

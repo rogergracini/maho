@@ -1,0 +1,86 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2024 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @var $this Mage_CurrencySymbol_Block_Adminhtml_System_Currencysymbol
+ */
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;"><h3><?= $this->getHeader() ?></h3></td>
+            <td class="form-buttons">
+                <?php
+                    echo $this->getSaveButtonHtml();
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<?php $this->getCurrencySymbolsData();?>
+
+<form id="currency_symbols_form" action="<?= $this->getFormActionUrl() ?>" method="post">
+    <input name="form_key" type="hidden" value="<?= $this->getFormKey() ?>" />
+
+    <div class="entry-edit">
+        <div class="fieldset fieldset-wide">
+            <div class="grid">
+                <div class="hor-scroll">
+                    <table cellspacing="0" class="data table-cat-img-sizes">
+                        <colgroup>
+                            <col width="15%"/>
+                            <col />
+                        </colgroup>
+                        <thead>
+                            <tr class="headings">
+                                <th><span class="nobr"><span class="not-sort"><?= $this->__('Currency') ?></span></span></th>
+                                <th><span class="nobr"><span class="not-sort"><?= $this->__('Symbol') ?><span class="required"><em>*</em></span></span></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($this->getCurrencySymbolsData() as $code => $data): ?>
+                            <tr>
+                                <td class="label">
+                                <label for="custom_currency_symbol<?= $this->escapeHtml($code) ?>"><?= $this->escapeHtml($code) ?> (<?= $this->escapeHtml($data['displayName']) ?>)</label>
+                                </td>
+                                <td class="value">
+                                    <input id="custom_currency_symbol<?= $this->escapeHtml($code) ?>" class=" required-entry input-text" type="text" value="<?= Mage::helper('core')->quoteEscape($this->escapeHtml($data['displaySymbol'])) ?>"<?= $data['inherited'] ? ' disabled="disabled"' : '';?> name="custom_currency_symbol[<?= $this->escapeHtml($code) ?>]">
+                                    &nbsp; <input id="custom_currency_symbol_inherit<?= $this->escapeHtml($code) ?>" class="checkbox config-inherit" type="checkbox" onclick="toggleUseDefault(<?= '\'' . $this->escapeHtml($code) . '\',\'' . Mage::helper('core')->quoteEscape($data['parentSymbol'], true) . '\'' ?>)"<?= $data['inherited'] ? ' checked="checked"' : '' ?> value="1" name="inherit_custom_currency_symbol[<?= $this->escapeHtml($code) ?>]">
+                                    <label class="inherit" title="" for="custom_currency_symbol_inherit<?= $this->escapeHtml($code) ?>"><?= $this->getInheritText() ?></label>
+                                </td>
+                            </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    var currencySymbolsForm = new varienForm('currency_symbols_form');
+
+    function toggleUseDefault(code, value)
+    {
+        checkbox = $('custom_currency_symbol_inherit'+code);
+        input = $('custom_currency_symbol'+code);
+        if (checkbox.checked) {
+            input.value = value;
+            input.disabled = true;
+        } else {
+            input.disabled = false;
+        }
+    }
+</script>
+

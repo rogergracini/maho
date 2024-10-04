@@ -1,0 +1,32 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<div class="header-container">
+    <div class="header">
+        <?php if ($this->getIsHomePage()):?>
+        <h1 class="logo"><strong><?= $this->getLogoAlt() ?></strong><a href="<?= $this->getUrl('') ?>" title="<?= $this->getLogoAlt() ?>" class="logo"><img src="<?= $this->getLogoSrc() ?>" alt="<?= $this->getLogoAlt() ?>" /></a></h1>
+        <?php else: ?>
+        <a href="<?= $this->getUrl('') ?>" title="<?= $this->getLogoAlt() ?>" class="logo"><strong><?= $this->getLogoAlt() ?></strong><img src="<?= $this->getLogoSrc() ?>" alt="<?= $this->getLogoAlt() ?>" /></a>
+        <?php endif ?>
+        <div class="quick-access">
+            <?= $this->getChildHtml('topSearch') ?>
+            <p class="welcome-msg"><?= $this->getChildHtml('welcome') ?> <?= $this->getAdditionalHtml() ?></p>
+            <?= $this->getChildHtml('topLinks') ?>
+            <?= $this->getChildHtml('store_language') ?>
+        </div>
+        <?= $this->getChildHtml('topContainer') ?>
+    </div>
+</div>
+<?= $this->getChildHtml('topMenu') ?>

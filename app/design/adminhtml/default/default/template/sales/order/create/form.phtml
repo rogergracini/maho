@@ -1,0 +1,35 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2019-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<script type="text/javascript">
+    var order = new AdminOrder(<?= $this->getOrderDataJson() ?>);
+    order.setLoadBaseUrl('<?= $this->getLoadBlockUrl() ?>');
+    var payment = {};
+    payment.switchMethod = order.switchPaymentMethod.bind(order);
+</script>
+<form id="edit_form" action="<?= $this->getSaveUrl() ?>" method="post" enctype="multipart/form-data">
+    <?= $this->getBlockHtml('formkey') ?>
+    <div id="order-message">
+        <?= $this->getChildHtml('message') ?>
+    </div>
+    <div id="order-customer-selector" style="display:<?= $this->getCustomerSelectorDisplay() ?>">
+        <?php if (!$this->getCustomerId()): ?>
+            <?= $this->getChildHtml('customer') ?>
+        <?php endif ?>
+    </div>
+    <div id="order-store-selector" style="display:<?= $this->getStoreSelectorDisplay() ?>">
+        <?= $this->getChildHtml('store') ?>
+    </div>
+    <div id="order-data" style="display:<?= $this->getDataSelectorDisplay() ?>">
+        <?= $this->getChildHtml('data') ?>
+    </div>
+</form>

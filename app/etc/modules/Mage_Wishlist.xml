@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Maho
+ *
+ * @category   Mage
+ * @package    Mage_Wishlist
+ * @copyright  Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright  Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @license    https://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Mage_Wishlist>
+            <active>true</active>
+            <codePool>core</codePool>
+            <depends>
+                <Mage_Catalog/>
+                <Mage_Customer/>
+            </depends>
+        </Mage_Wishlist>
+    </modules>
+</config>

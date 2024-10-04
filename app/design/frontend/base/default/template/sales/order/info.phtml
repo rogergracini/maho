@@ -1,0 +1,86 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php /** @var $this Mage_Sales_Block_Order_Info */ ?>
+<?php $_order = $this->getOrder() ?>
+<?= $this->getMessagesBlock()->toHtml() ?>
+<div class="page-title title-buttons">
+    <h1><?= $this->__('Order #%s - %s', $_order->getRealOrderId(), $_order->getStatusLabel()) ?></h1>
+    <?= $this->getChildHtml('buttons') ?>
+</div>
+<?= $this->getStatusHistoryRssUrl($_order) ?>
+<dl class="order-info">
+    <dt><?= $this->__('About This Order:') ?></dt>
+    <dd>
+        <?php $_links = $this->getLinks(); ?>
+        <ul id="order-info-tabs">
+        <?php foreach ($_links as $_link): ?>
+            <?php if($_link->getUrl()): ?>
+                <li><a href="<?= $_link->getUrl() ?>"><?= $_link->getLabel() ?></a></li>
+            <?php else: ?>
+                <li class="current"><?= $_link->getLabel() ?></li>
+            <?php endif ?>
+        <?php endforeach ?>
+        </ul>
+    </dd>
+</dl>
+<p class="order-date"><?= $this->__('Order Date: %s', $this->formatDate($_order->getCreatedAtStoreDate(), 'long')) ?></p>
+<?php if (!$_order->getIsVirtual()): ?>
+<div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?= $this->__('Shipping Address') ?></h2>
+            </div>
+            <div class="box-content">
+                <address><?= $_order->getShippingAddress()->format('html') ?></address>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="box">
+            <div class="box-title">
+                <h2><?= $this->__('Shipping Method') ?></h2>
+            </div>
+            <div class="box-content">
+                <?php if ($_order->getShippingDescription()): ?>
+                    <?= $this->escapeHtml($_order->getShippingDescription()) ?>
+                <?php else: ?>
+                    <p><?= $this->helper('sales')->__('No shipping information available') ?></p>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif ?>
+<div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?= $this->__('Billing Address') ?></h2>
+            </div>
+            <div class="box-content">
+                <address><?= $_order->getBillingAddress()->format('html') ?></address>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="box box-payment">
+            <div class="box-title">
+                <h2><?= $this->__('Payment Method') ?></h2>
+            </div>
+            <div class="box-content">
+                <?= $this->getPaymentInfoHtml() ?>
+            </div>
+        </div>
+    </div>
+</div>

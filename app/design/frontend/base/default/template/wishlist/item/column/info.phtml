@@ -1,0 +1,26 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/* @var Mage_Wishlist_Model_Item $item */
+$item = $this->getItem();
+$product = $item->getProduct();
+?>
+<h3 class="product-name"><a href="<?= $this->getProductUrl($item) ?>" title="<?= $this->escapeHtml($product->getName()) ?>"><?= $this->escapeHtml($product->getName()) ?></a></h3>
+<div class="description std"><div class="inner"><?= $this->escapeHtml($this->stripTags($product->getShortDescription())) ?></div></div>
+<textarea name="description[<?= $item->getWishlistItemId() ?>]" rows="3" cols="5" onfocus="focusComment(this)" onblur="focusComment(this)" title="<?= Mage::helper('core')->quoteEscape($this->__('Comment')) ?>"><?= ($this->escapeHtml($item->getDescription() ? $item->getDescription() : $this->helper('wishlist')->defaultCommentString())) ?></textarea>
+<?php if($this->getSortedChildren()): ?>
+    <div class="item-manage">
+    <?php foreach($this->getSortedChildren() as $childName):?>
+        <?= $this->getChildHtml($childName, false) ?>
+    <?php endforeach ?>
+    </div>
+<?php endif ?>

@@ -1,0 +1,47 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+    $columns = $this->getColumns();
+?>
+<table class="data-table" id="wishlist-table">
+    <thead>
+        <tr>
+            <?php foreach ($columns as $column): ?>
+                <th><?= $column->getTitle() ?></th>
+            <?php endforeach ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (count($this->getItems())): ?>
+            <?php foreach ($this->getItems() as $item): ?>
+                <tr id="item_<?= $item->getId() ?>">
+                    <?php foreach ($columns as $column): ?>
+                        <td><?php $column->setItem($item); echo $column->toHtml($item);?></td>
+                    <?php endforeach ?>
+                </tr>
+            <?php endforeach ?>
+        <?php else: ?>
+            <td colspan="<?= count($columns) ?>" class="wishlist-empty"><?= $this->__('This Wishlist has no Items') ?></td>
+        <?php endif ?>
+    </tbody>
+</table>
+<?php foreach ($columns as $column): ?>
+    <?= $column->getAdditionalHtml() ?>
+<?php endforeach ?>
+<script type="text/javascript">
+//<![CDATA[
+<?php foreach ($columns as $column): ?>
+    <?= $column->getJs() ?>
+<?php endforeach ?>
+//]]>
+</script>

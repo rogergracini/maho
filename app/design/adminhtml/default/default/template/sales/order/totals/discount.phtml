@@ -1,0 +1,28 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_source  = $this->getSource() ?>
+<?php $_order   = $this->getOrder() ?>
+<?php $this->setPriceDataObject($_source) ?>
+
+<?php if ((float) $_source->getDiscountAmount()): ?>
+    <tr>
+        <td class="label">
+            <?php if ($_order->getCouponCode()): ?>
+                <?= Mage::helper('sales')->__('Discount (%s)', $this->escapeHtml($_order->getCouponCode())) ?>
+            <?php else: ?>
+                <?= Mage::helper('sales')->__('Discount') ?>
+            <?php endif ?>
+        </td>
+        <td><?= $this->displayPriceAttribute('discount_amount') ?></td>
+    </tr>
+<?php endif ?>

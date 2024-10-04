@@ -1,0 +1,48 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<br/>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3><?= Mage::helper('adminhtml')->__('Additional Cache Management') ?></h3></td>
+            <td class="form-buttons"></td>
+         </tr>
+    </table>
+</div>
+<table class="form-list">
+    <tr>
+        <td class="scope-label">
+            <button onclick="setLocation('<?= $this->getCleanImagesUrl()?>')" type="button" class="scalable"><span><span><span><?= Mage::helper('adminhtml')->__('Flush Catalog Images Cache') ?></span></span></span></button>
+        </td>
+        <td class="scope-label">
+            <?= Mage::helper('adminhtml')->__('Pregenerated product images files.') ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="scope-label">
+            <button onclick="setLocation('<?= $this->getCleanSwatchesUrl()?>')" type="button" class="scalable"><span><span><span><?= Mage::helper('adminhtml')->__('Flush Swatch Images Cache') ?></span></span></span></button>
+        </td>
+        <td class="scope-label">
+            <?= Mage::helper('adminhtml')->__('Pregenerated configurable swatches image files.') ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="scope-label">
+            <button onclick="setLocation('<?= $this->getCleanMediaUrl()?>')" type="button" class="scalable"><span><span><span><?= Mage::helper('adminhtml')->__('Flush JavaScript/CSS Cache') ?></span></span></span></button>
+        </td>
+        <td class="scope-label">
+            <?= Mage::helper('adminhtml')->__('Themes JavaScript and CSS files combined to one file.') ?>
+        </td>
+    </tr>
+</table>
+<?= $this->getChildHtml() ?>

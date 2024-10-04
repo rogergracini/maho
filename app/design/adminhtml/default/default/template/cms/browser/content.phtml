@@ -1,0 +1,35 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Wysiwyg Images content template
+ *
+ * @see Mage_Adminhtml_Block_Cms_Wysiwyg_Images_Content
+ */
+?>
+<?= $this->getChildHtml('wysiwyg_images.js') ?>
+
+<div class="content-header skip-header" id="content_header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 id="content_header_text"><?= $this->getHeaderText() ?></h3></td>
+            <td class="form-buttons">
+                <?= $this->getButtonsHtml() ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="contents-uploader"><?= $this->getChildHtml('wysiwyg_images.uploader') ?></div>
+<div id="contents"></div>
+<div id="contents-newfolder" class="no-display"><?= $this->getChildHtml('wysiwyg_images.newfolder') ?></div>

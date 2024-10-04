@@ -1,0 +1,18 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php if ($this->getCanDisplayTotalDue()): ?>
+<tr>
+    <td class="label"><big><strong><?= Mage::helper('sales')->__('Total Due', true) ?></strong></big></td>
+    <td class="emph"><big><?= $this->displayPriceAttribute('total_due', true) ?></big></td>
+</tr>
+<?php endif ?>

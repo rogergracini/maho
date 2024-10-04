@@ -1,0 +1,29 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="content-header">
+    <h3><?= $this->__('System busy') ?></h3>
+</div>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4><?= $this->__('Status') ?></h4>
+    </div>
+    <div class="fieldset ">
+        <ul class="messages">
+            <li class="success-msg">
+                <ul>
+                    <li><?= $this->getStatusMessage() ?></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?= $this->getMessagesBlock()->toHtml() ?>
+<?= $this->__('Your account balance is: %s', $customer->getStoreBalance()) ?>
+<div class="buttons-set">
+    <p class="back-link"><a href="<?= $this->getUrl('customer/account') ?>"><small>&laquo; </small><?= $this->__('Back') ?></a></p>
+</div>

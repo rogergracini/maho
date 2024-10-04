@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Maho
+ *
+ * @category   Mage
+ * @package    Mage_Widget
+ * @copyright  Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright  Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @license    https://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
+-->
+<jstranslator>
+    <!-- widget.js -->
+    <widget-ui-insert translate="message" module="widget">
+        <message>Insert Widget...</message>
+    </widget-ui-insert>
+    <!-- end widget.js -->
+</jstranslator>

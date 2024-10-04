@@ -1,0 +1,46 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2021-2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?= $this->__('Catalog Advanced Search') ?></h1>
+</div>
+<?= $this->getMessagesBlock()->toHtml() ?>
+<?php if($this->getResultCount()): ?>
+    <p class="advanced-search-amount">
+        <?= $this->helper('catalogsearch')->__('<strong>%d item(s)</strong> were found using the following search criteria', $this->getResultCount()) ?>
+    </p>
+<?php else: ?>
+    <p class="error-msg"><?= $this->helper('catalogsearch')->__('No items were found using the following search criteria.');?> <a href="<?= $this->getFormUrl() ?>"><?= $this->helper('catalogsearch')->__('Modify your search') ?></a></p>
+<?php endif ?>
+
+<div class="advanced-search-summary">
+    <?php $searchCriterias=$this->getSearchCriterias(); ?>
+        <?php foreach (['left', 'right'] as $side): ?>
+            <?php if(@$searchCriterias[$side]): ?>
+                <ul>
+                    <?php foreach($searchCriterias[$side] as $criteria): ?>
+                        <li><strong><?= $this->escapeHtml($this->helper('catalog')->__($criteria['name'])) ?>:</strong> <?= $this->escapeHtml($criteria['value']) ?></li>
+                    <?php endforeach ?>
+                </ul>
+            <?php endif ?>
+        <?php endforeach ?>
+    <?php if($this->getResultCount()): ?>
+        <p>
+            <?= $this->helper('catalogsearch')->__("Don't see what you're looking for?") ?>
+            <a href="<?= $this->getFormUrl() ?>"><?= $this->helper('catalogsearch')->__('Modify your search') ?></a>
+        </p>
+    <?php endif ?>
+</div>
+<?php if($this->getResultCount()): ?>
+    <?= $this->getProductListHtml() ?>
+<?php endif ?>
+<?php $this->getSearchCriterias(); ?>

@@ -1,0 +1,21 @@
+<?php
+/**
+ * Maho
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2006-2020 Magento, Inc. (https://magento.com)
+ * @copyright   Copyright (c) 2022 The OpenMage Contributors (https://openmage.org)
+ * @copyright   Copyright (c) 2024 Maho (https://mahocommerce.com)
+ * @license     https://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?= Mage::helper('customer')->__('You are now logged out') ?></h1>
+</div>
+<p><?= Mage::helper('customer')->__('You have logged out and will be redirected to our homepage in 5 seconds.') ?></p>
+<script type="text/javascript">
+//<![CDATA[
+    setTimeout(function(){ location.href = '<?= $this->getUrl() ?>'},5000);
+//]]>
+</script>
