@@ -1,7 +1,5 @@
 <?php
-/**
- * 
- * 
+/**+
  * Maho
  *
  * @category   Mage
